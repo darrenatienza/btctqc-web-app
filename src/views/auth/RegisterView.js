@@ -1,21 +1,20 @@
 import React from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
+
+import { useForm, Controller } from 'react-hook-form';
 import {
   Box,
   Button,
-  Checkbox,
   Container,
-  FormHelperText,
   Link,
   TextField,
   Typography,
+  Grid,
   makeStyles
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     height: '100%',
@@ -27,55 +26,29 @@ const useStyles = makeStyles((theme) => ({
 const RegisterView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const methods = useForm();
+  const { handleSubmit, control, setValue } = methods;
+  const onSubmit = data => {
+    navigate('/login');
+    setValue('firstName', 'test');
+    console.table(data);
+  };
 
   return (
-    <Page
-      className={classes.root}
-      title="Register"
-    >
+    <Page className={classes.root} title="Register">
       <Box
         display="flex"
         flexDirection="column"
         height="100%"
         justifyContent="center"
       >
-        <Container maxWidth="sm">
-          <Formik
-            initialValues={{
-              email: '',
-              firstName: '',
-              lastName: '',
-              password: '',
-              policy: false
-            }}
-            validationSchema={
-              Yup.object().shape({
-                email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                firstName: Yup.string().max(255).required('First name is required'),
-                lastName: Yup.string().max(255).required('Last name is required'),
-                password: Yup.string().max(255).required('password is required'),
-                policy: Yup.boolean().oneOf([true], 'This field must be checked')
-              })
-            }
-            onSubmit={() => {
-              navigate('/app/dashboard', { replace: true });
-            }}
-          >
-            {({
-              errors,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-              isSubmitting,
-              touched,
-              values
-            }) => (
-              <form onSubmit={handleSubmit}>
-                <Box mb={3}>
-                  <Typography
-                    color="textPrimary"
-                    variant="h2"
-                  >
+        <Container maxWidth="md">
+          <Grid container spacing={3}>
+            <Grid item md={6} sm={12}></Grid>
+            <Grid item md={6} sm={12}>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <Box>
+                  <Typography color="textPrimary" variant="h2">
                     Create new account
                   </Typography>
                   <Typography
@@ -86,92 +59,55 @@ const RegisterView = () => {
                     Use your email to create new account
                   </Typography>
                 </Box>
-                <TextField
-                  error={Boolean(touched.firstName && errors.firstName)}
+                <Controller
+                  as={TextField}
                   fullWidth
-                  helperText={touched.firstName && errors.firstName}
-                  label="First name"
                   margin="normal"
                   name="firstName"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.firstName}
-                  variant="outlined"
+                  label="First name"
+                  control={control}
+                  defaultValue=""
                 />
-                <TextField
-                  error={Boolean(touched.lastName && errors.lastName)}
+                <Controller
+                  as={TextField}
                   fullWidth
-                  helperText={touched.lastName && errors.lastName}
-                  label="Last name"
+                  margin="normal"
+                  name="middleName"
+                  label="Middle name"
+                  control={control}
+                  defaultValue=""
+                />
+                <Controller
+                  as={TextField}
+                  fullWidth
                   margin="normal"
                   name="lastName"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.lastName}
-                  variant="outlined"
+                  label="Last name"
+                  control={control}
+                  defaultValue=""
                 />
-                <TextField
-                  error={Boolean(touched.email && errors.email)}
+                <Controller
+                  as={TextField}
                   fullWidth
-                  helperText={touched.email && errors.email}
-                  label="Email Address"
                   margin="normal"
-                  name="email"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  type="email"
-                  value={values.email}
-                  variant="outlined"
+                  name="address"
+                  label="Complete Address"
+                  control={control}
+                  defaultValue=""
                 />
-                <TextField
-                  error={Boolean(touched.password && errors.password)}
+                <Controller
+                  as={TextField}
                   fullWidth
-                  helperText={touched.password && errors.password}
-                  label="Password"
                   margin="normal"
-                  name="password"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  type="password"
-                  value={values.password}
-                  variant="outlined"
+                  name="contactNumber"
+                  label="Contact Number"
+                  type="tel"
+                  control={control}
+                  defaultValue="+639"
                 />
-                <Box
-                  alignItems="center"
-                  display="flex"
-                  ml={-1}
-                >
-                  <Checkbox
-                    checked={values.policy}
-                    name="policy"
-                    onChange={handleChange}
-                  />
-                  <Typography
-                    color="textSecondary"
-                    variant="body1"
-                  >
-                    I have read the
-                    {' '}
-                    <Link
-                      color="primary"
-                      component={RouterLink}
-                      to="#"
-                      underline="always"
-                      variant="h6"
-                    >
-                      Terms and Conditions
-                    </Link>
-                  </Typography>
-                </Box>
-                {Boolean(touched.policy && errors.policy) && (
-                  <FormHelperText error>
-                    {errors.policy}
-                  </FormHelperText>
-                )}
                 <Box my={2}>
                   <Button
                     color="primary"
-                    disabled={isSubmitting}
                     fullWidth
                     size="large"
                     type="submit"
@@ -180,23 +116,15 @@ const RegisterView = () => {
                     Sign up now
                   </Button>
                 </Box>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  Have an account?
-                  {' '}
-                  <Link
-                    component={RouterLink}
-                    to="/login"
-                    variant="h6"
-                  >
+                <Typography color="textSecondary" variant="body1">
+                  Have an account?{' '}
+                  <Link component={RouterLink} to="/login" variant="h6">
                     Sign in
                   </Link>
                 </Typography>
               </form>
-            )}
-          </Formik>
+            </Grid>
+          </Grid>
         </Container>
       </Box>
     </Page>
