@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
-import PassengerDetailView from './PassengerDetailView';
+//import PassengerDetailView from './PassengerDetailView';
 import PassengerListView from './PassengerListView';
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,7 +17,6 @@ const PassengerView = () => {
     <div>
       <Page className={classes.root} title="Passengers">
         <PassengerListView />
-        <PassengerDetailView />
       </Page>
     </div>
   );
