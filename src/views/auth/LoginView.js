@@ -31,7 +31,7 @@ const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const methods = useForm();
-  const { handleSubmit, control } = methods;
+  const { handleSubmit, control, errors } = methods;
   // http request
   const [
     {
@@ -39,7 +39,7 @@ const LoginView = () => {
       loading,
       error
     },
-    login
+    executeLogin
   ] = useAxios(
     { url: `/login`, method: 'POST' },
     {
@@ -47,7 +47,7 @@ const LoginView = () => {
     }
   );
   const onSubmit = async data => {
-    const { data: user } = await login({
+    const { data: user } = await executeLogin({
       data: {
         username: data.username,
         password: data.password
@@ -85,6 +85,8 @@ const LoginView = () => {
               name="username"
               control={control}
               defaultValue=""
+              error={errors.username && true}
+              rules={{ required: true }}
             />
             <Controller
               as={TextField}
@@ -95,6 +97,8 @@ const LoginView = () => {
               type="password"
               margin="normal"
               label="Password"
+              error={errors.password && true}
+              rules={{ required: true }}
             />
             {error && (
               <Alert severity="error" color="error">

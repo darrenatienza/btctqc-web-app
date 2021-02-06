@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import useAxios from 'axios-hooks';
+import Alert from '@material-ui/lab/Alert';
+import { useForm, Controller } from 'react-hook-form';
+import { useCurrentUser } from '../../../states';
 import {
   Box,
   Button,
@@ -13,175 +17,181 @@ import {
   makeStyles
 } from '@material-ui/core';
 
-const states = [
-  {
-    value: 'alabama',
-    label: 'Alabama'
-  },
-  {
-    value: 'new-york',
-    label: 'New York'
-  },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  }
-];
-
 const useStyles = makeStyles(() => ({
   root: {}
 }));
 
 const ProfileDetails = ({ className, ...rest }) => {
+  const [affectedRows, setAffectedRows] = useState(0);
   const classes = useStyles();
-  const [values, setValues] = useState({
-    firstName: 'Katarina',
-    lastName: 'Smith',
-    email: 'demo@devias.io',
-    phone: '',
-    state: 'Alabama',
-    country: 'USA'
-  });
+  const methods = useForm();
+  const { handleSubmit, control, errors, setValue } = methods;
+  //app states
+  const [currentUser] = useCurrentUser();
+  //http request
+  const [
+    {
+      //data,
+      putLoading,
+      putError
+    },
+    executePut
+  ] = useAxios(
+    {
+      url: `/records/user_details/${currentUser.currentUserID}`,
+      method: 'PUT'
+    },
+    {
+      manual: true
+    }
+  );
+  const [
+    { data, loading, error }
+    //refetch
+  ] = useAxios(
+    {
+      url: `/records/user_details/${currentUser.currentUserID}`,
+      method: 'GET'
+    },
+    {
+      manual: false
+    }
+  );
+  //observers
+  useEffect(() => {
+    const timeOutId = setTimeout(() => setAffectedRows(0), 2000);
+    return () => clearTimeout(timeOutId);
+  }, [affectedRows]);
 
-  const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
+  useEffect(() => {
+    if (data) {
+      setValue('firstName', data.first_name);
+      setValue('middleName', data.middle_name);
+      setValue('lastName', data.last_name);
+      setValue('address', data.address);
+      setValue('contactNumber', data.contact_number);
+    }
+  }, [data]);
+  //callback
+  const onSubmit = async data => {
+    if (currentUser.currentUserID > 0) {
+      const { data: rows } = await executePut({
+        data: {
+          first_name: data.firstName,
+          middle_name: data.middleName,
+          last_name: data.lastName,
+          address: data.address,
+          contact_number: data.contactNumber
+        }
+      });
+      setAffectedRows(rows);
+    }
+    //user.user_id > 0 && navigate('/app/dashboard');
   };
-
   return (
     <form
+      onSubmit={handleSubmit(onSubmit)}
       autoComplete="off"
       noValidate
       className={clsx(classes.root, className)}
       {...rest}
     >
       <Card>
-        <CardHeader
-          subheader="The information can be edited"
-          title="Profile"
-        />
+        <CardHeader title="Profile" />
         <Divider />
         <CardContent>
-          <Grid
-            container
-            spacing={3}
-          >
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
+          <Grid container spacing={3}>
+            <Grid item md={4} xs={12}>
+              <Controller
+                control={control}
+                as={TextField}
+                defaultValue=""
+                rules={{ required: true }}
                 fullWidth
-                helperText="Please specify the first name"
                 label="First name"
                 name="firstName"
-                onChange={handleChange}
-                required
-                value={values.firstName}
                 variant="outlined"
+                error={errors.firstName && true}
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
+            <Grid item md={4} xs={12}>
+              <Controller
+                control={control}
+                as={TextField}
+                defaultValue=""
+                rules={{ required: true }}
+                fullWidth
+                label="Middle name"
+                name="middleName"
+                variant="outlined"
+                error={errors.middleName && true}
+              />
+            </Grid>
+            <Grid item md={4} xs={12}>
+              <Controller
+                control={control}
+                as={TextField}
+                defaultValue=""
+                rules={{ required: true }}
                 fullWidth
                 label="Last name"
                 name="lastName"
-                onChange={handleChange}
-                required
-                value={values.lastName}
                 variant="outlined"
+                error={errors.lastName && true}
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
+            <Grid item md={6} xs={12}>
+              <Controller
+                control={control}
+                as={TextField}
+                defaultValue=""
+                rules={{ required: true }}
                 fullWidth
-                label="Email Address"
-                name="email"
-                onChange={handleChange}
-                required
-                value={values.email}
+                label="Address"
+                name="address"
                 variant="outlined"
+                error={errors.address && true}
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
+
+            <Grid item md={6} xs={12}>
+              <Controller
+                control={control}
+                as={TextField}
+                defaultValue="+639"
+                rules={{ required: true }}
                 fullWidth
-                label="Phone Number"
-                name="phone"
-                onChange={handleChange}
-                type="number"
-                value={values.phone}
+                type="tel"
+                label="Contact Number"
+                name="contactNumber"
                 variant="outlined"
+                error={errors.contactNumber && true}
               />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Country"
-                name="country"
-                onChange={handleChange}
-                required
-                value={values.country}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Select State"
-                name="state"
-                onChange={handleChange}
-                required
-                select
-                SelectProps={{ native: true }}
-                value={values.state}
-                variant="outlined"
-              >
-                {states.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
             </Grid>
           </Grid>
+          <Box mt={2}>
+            {putError ||
+              (error && (
+                <Alert severity="error" color="error">
+                  Error while requesting to server.
+                </Alert>
+              ))}
+            {putLoading ||
+              (loading && (
+                <Alert severity="info" color="info">
+                  Saving...
+                </Alert>
+              ))}
+            {affectedRows > 0 && (
+              <Alert severity="success" color="success">
+                Details has been saved!
+              </Alert>
+            )}
+          </Box>
         </CardContent>
         <Divider />
-        <Box
-          display="flex"
-          justifyContent="flex-end"
-          p={2}
-        >
-          <Button
-            color="primary"
-            variant="contained"
-          >
+        <Box display="flex" justifyContent="flex-end" p={2}>
+          <Button color="primary" variant="contained" type="submit">
             Save details
           </Button>
         </Box>
