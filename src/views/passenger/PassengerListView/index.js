@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import useAxios from 'axios-hooks';
 import {
   Box,
   Container
@@ -7,25 +8,48 @@ import {
 
 import Results from './Results';
 import Toolbar from './Toolbar';
-import data from './data';
 
+import { Alert } from '@material-ui/lab';
+import { usePassenger } from '../../../states';
 //const useStyles = makeStyles(theme => ({
-//  root: {
-//    backgroundColor: theme.palette.background.dark,
-//    minHeight: '100%',
-//    paddingBottom: theme.spacing(3),
-//    paddingTop: theme.spacing(3)
-//  }
+//  root: {}
 //}));
-//
-const PassengerListView = () => {
-  const [customers] = useState(data);
 
+const PassengerListView = () => {
+  const [criteria, setCriteria] = useState('');
+  const [passenger, { setSelectedPassengerID }] = usePassenger();
+  const [{ data, loading, error }, refetch] = useAxios(
+    {
+      url: `/records/user_details?filter1=first_name,cs,${criteria}`,
+      method: 'GET'
+    },
+    { manual: true }
+  );
+
+  // search options
+  useEffect(() => {
+    reloadList();
+  }, [criteria]);
+
+  const reloadList = async () => {
+    await refetch();
+  };
+
+  const onSearch = query => {
+    setCriteria(query);
+  };
+  const onView = id => {
+    setSelectedPassengerID(id);
+  };
   return (
     <Container maxWidth={false}>
-      <Toolbar />
+      <Toolbar onSearch={onSearch} />
+      {loading && <Alert severity="info">Loading...</Alert>}
+      {error && (
+        <Alert severity="error">Error while loading data from server!</Alert>
+      )}
       <Box mt={3}>
-        <Results customers={customers} />
+        <Results passengers={data ? data.records : []} onView={onView} />
       </Box>
     </Container>
   );

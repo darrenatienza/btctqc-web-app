@@ -1,8 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
-import PassengerDetailView from './PassengerDetailView';
-import PassengerListView from './PassengerListView';
+import BusListView from './BusListView';
+import BusDetailView from './BusDetailView';
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -11,16 +11,16 @@ const useStyles = makeStyles(theme => ({
     paddingTop: theme.spacing(3)
   }
 }));
-const PassengerView = () => {
+const BusView = () => {
   const classes = useStyles();
   return (
     <div>
-      <Page className={classes.root} title="Passengers">
-        <PassengerListView />
-        <PassengerDetailView />
+      <Page className={classes.root} title="Buses">
+        <BusListView />
+        <BusDetailView />
       </Page>
     </div>
   );
 };
 
-export default PassengerView;
+export default BusView;

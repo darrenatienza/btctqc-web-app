@@ -3,34 +3,36 @@ import {
   Container, //Grid,
   makeStyles
 } from '@material-ui/core';
-import Profile from './Profile';
-import { usePassenger } from '../../../states';
+import Detail from './Detail';
+import { useBus } from '../../../states';
 import useAxios from 'axios-hooks';
 //import PassengerHistoryListView from '../PassengerHistoryListView';
 const useStyles = makeStyles(theme => ({
   root: { backgroundColor: theme.palette.background.dark }
 }));
 
-const PassengerDetailView = () => {
-  const [passenger] = usePassenger();
+const BusDetailView = () => {
+  const [bus] = useBus();
   const classes = useStyles();
   const [{ data, loading, error }, refetch] = useAxios(
     {
-      url: `/records/user_details/${passenger.selectedPassengerID}`,
+      url: `/records/bus_infos/${bus.selectedBusID}`,
       method: 'GET'
     },
     { manual: true }
   );
   useEffect(() => {
-    if (passenger.selectedPassengerID > 0) {
+    if (bus.selectedBusID > 0) {
       refetch();
+    } else {
+      console.log('add');
     }
-  }, [passenger.selectedPassengerID]);
+  }, [bus.selectedBusID]);
   return (
     <Container maxWidth="sm" className={classes.root}>
-      <Profile detail={data} />
+      <Detail detail={data} />
     </Container>
   );
 };
 
-export default PassengerDetailView;
+export default BusDetailView;

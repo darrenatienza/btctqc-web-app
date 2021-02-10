@@ -10,6 +10,7 @@ import ProductListView from 'src/views/product/ProductListView';
 import RegisterView from 'src/views/auth/RegisterView';
 import SettingsView from 'src/views/settings/SettingsView';
 import PassengerView from 'src/views/passenger';
+import BusView from 'src/views/bus';
 const routes = [
   {
     path: 'app',
@@ -17,6 +18,7 @@ const routes = [
     children: [
       { path: 'account', element: <AccountView /> },
       { path: 'passengers', element: <PassengerView /> },
+      { path: 'buses', element: <BusView /> },
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'products', element: <ProductListView /> },
       { path: 'settings', element: <SettingsView /> },

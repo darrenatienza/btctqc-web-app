@@ -8,17 +8,24 @@ import {
   TextField,
   InputAdornment,
   SvgIcon,
-  //Grid,
+  Grid,
+  Button,
   makeStyles
   //Typography
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
 
-const useStyles = makeStyles(() => ({
-  root: {}
+const useStyles = makeStyles(themes => ({
+  root: {},
+  addButton: {
+    [themes.breakpoints.down('md')]: {
+      marginBottom: '25px'
+    }
+  },
+  search: {}
 }));
 
-const Toolbar = ({ className, onSearch, ...rest }) => {
+const Toolbar = ({ className, onSearch, onAdd, ...rest }) => {
   const classes = useStyles();
   const [query, setQuery] = useState('');
   useEffect(() => {
@@ -29,8 +36,20 @@ const Toolbar = ({ className, onSearch, ...rest }) => {
   return (
     <div className={clsx(classes.root, className)} {...rest}>
       <Box mt={3}>
-        <Box display="flex" justifyContent="flex-end">
-          <Box minWidth={500}>
+        <Grid
+          container
+          direction="row"
+          justify="space-between"
+          alignItems="flex-start"
+        >
+          <Grid item lg={6} md={6} xs={12}>
+            <Box className={classes.addButton}>
+              <Button color="primary" variant="contained" onClick={onAdd}>
+                Add New Bus
+              </Button>
+            </Box>
+          </Grid>
+          <Grid item lg={6} md={6} xs={12}>
             <TextField
               onChange={e => setQuery(e.target.value)}
               fullWidth
@@ -43,10 +62,10 @@ const Toolbar = ({ className, onSearch, ...rest }) => {
                   </InputAdornment>
                 )
               }}
-              placeholder="Passenger's Name"
+              placeholder="Bus name, code"
             />
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
       </Box>
     </div>
   );

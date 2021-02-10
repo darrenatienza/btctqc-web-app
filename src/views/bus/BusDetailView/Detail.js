@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const Profile = ({ className, detail, ...rest }) => {
+const Detail = ({ className, detail, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -73,8 +73,8 @@ const Profile = ({ className, detail, ...rest }) => {
   );
 };
 
-Profile.propTypes = {
+Detail.propTypes = {
   className: PropTypes.string
 };
 
-export default Profile;
+export default Detail;

@@ -16,6 +16,7 @@
   "rules": {
     "linebreak-style": ["error", "windows"],
     "no-underscore-dangle": "off",
+    "no-unused-vars": "off",
     "arrow-body-style": "off",
     "comma-dangle": "off",
     "import/no-unresolved": "off",

@@ -17,15 +17,20 @@ import {
   makeStyles
 } from '@material-ui/core';
 import getInitials from 'src/utils/getInitials';
-import { Eye as EyeIcon } from 'react-feather';
+import { Edit as EditIcon, Delete as DeleteIcon } from 'react-feather';
 const useStyles = makeStyles(theme => ({
   root: { paddingLeft: '15px', paddingRight: '15px' },
   avatar: {
     marginRight: theme.spacing(2)
+  },
+  nameTableCell: {
+    [theme.breakpoints.up('md')]: {
+      width: '500px'
+    }
   }
 }));
 
-const Results = ({ className, passengers, onView, ...rest }) => {
+const Results = ({ className, buses, onEdit, onDelete, ...rest }) => {
   const classes = useStyles();
 
   const [limit, setLimit] = useState(10);
@@ -42,44 +47,49 @@ const Results = ({ className, passengers, onView, ...rest }) => {
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
       <PerfectScrollbar>
-        <Box minWidth={1050}>
+        <Box minWidth={450}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell padding="default">Name</TableCell>
-                <TableCell>Address</TableCell>
-                <TableCell>Contact Number</TableCell>
+                <TableCell padding="default">Code</TableCell>
+                <TableCell>Name</TableCell>
                 <TableCell>Registration date</TableCell>
                 <TableCell padding="default"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {passengers &&
-                passengers.slice(0, limit).map(passenger => (
-                  <TableRow hover key={passenger.user_detail_id}>
+              {buses &&
+                buses.slice(0, limit).map(bus => (
+                  <TableRow hover key={bus.bus_info_id}>
                     <TableCell padding="default">
                       <Box alignItems="center" display="flex">
                         <Typography color="textPrimary" variant="body1">
-                          {`${passenger.first_name} ${getInitials(
-                            passenger.middle_name
-                          )}. ${passenger.last_name}`}
+                          {bus.code}
                         </Typography>
                       </Box>
                     </TableCell>
-                    <TableCell>{passenger.address}</TableCell>
-                    <TableCell>{passenger.contact_number}</TableCell>
-
+                    <TableCell className={classes.nameTableCell}>
+                      {bus.name}
+                    </TableCell>
                     <TableCell>
-                      {moment(passenger.create_time_stamp).format('DD/MM/YYYY')}
+                      {moment(bus.create_time_stamp).format('DD/MM/YYYY')}
                     </TableCell>
                     <TableCell padding="default">
                       <IconButton
-                        aria-controls="simple-open-button"
+                        aria-controls="simple-edi-button"
                         aria-haspopup="true"
-                        aria-label="Open"
-                        onClick={() => onView(passenger.user_detail_id)}
+                        aria-label="Edit"
+                        onClick={() => onEdit(bus.bus_info_id)}
                       >
-                        <EyeIcon />
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-controls="simple-delete-button"
+                        aria-haspopup="true"
+                        aria-label="Delete"
+                        onClick={() => onDelete(bus.bus_info_id)}
+                      >
+                        <DeleteIcon />
                       </IconButton>
                     </TableCell>
                   </TableRow>
@@ -90,7 +100,7 @@ const Results = ({ className, passengers, onView, ...rest }) => {
       </PerfectScrollbar>
       <TablePagination
         component="div"
-        count={passengers ? passengers.length : 0}
+        count={buses ? buses.length : 0}
         onChangePage={handlePageChange}
         onChangeRowsPerPage={handleLimitChange}
         page={page}
@@ -103,7 +113,7 @@ const Results = ({ className, passengers, onView, ...rest }) => {
 
 Results.propTypes = {
   className: PropTypes.string,
-  passengers: PropTypes.array.isRequired
+  buses: PropTypes.array.isRequired
 };
 
 export default Results;
