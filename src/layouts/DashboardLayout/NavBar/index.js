@@ -17,7 +17,11 @@ import {
   User as UserIcon,
   Users as UsersIcon
 } from 'react-feather';
-import { BiBus as BusIcon } from 'react-icons/bi';
+import {
+  BiBus as BusIcon,
+  BiListCheck as ListCheckIcon,
+  BiGridAlt as GridAltIcon
+} from 'react-icons/bi';
 import NavItem from './NavItem';
 
 const user = {
@@ -29,7 +33,7 @@ const user = {
 const items = [
   {
     href: '/app/dashboard',
-    icon: BarChartIcon,
+    icon: GridAltIcon,
     title: 'Dashboard'
   },
   {
@@ -41,6 +45,11 @@ const items = [
     href: '/app/buses',
     icon: BusIcon,
     title: 'Buses'
+  },
+  {
+    href: '/app/surveys',
+    icon: ListCheckIcon,
+    title: 'Surveys'
   },
   {
     href: '/app/account',

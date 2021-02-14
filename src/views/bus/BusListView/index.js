@@ -77,26 +77,32 @@ const BusListView = () => {
     setSelectedBusID(-1);
   };
   return (
-    <Container maxWidth={false}>
-      <Toolbar onSearch={onSearch} onAdd={onAdd} />
-      {loading ||
-        (deleteLoading && (
+    <div>
+      <Container maxWidth={false}>
+        <Toolbar onSearch={onSearch} onAdd={onAdd} />
+        {loading || deleteLoading ? (
           <Alert severity="info" className={classes.alert}>
             Loading...
           </Alert>
-        ))}
-      {error ||
-        (deleteError && (
-          <Alert severity="error">Error while loading data from server!</Alert>
-        ))}
-      <Box mt={3}>
-        <Results
-          buses={data ? data.records : []}
-          onEdit={onEdit}
-          onDelete={onDelete}
-        />
-      </Box>
-    </Container>
+        ) : (
+          ''
+        )}
+        {error || deleteError ? (
+          <Alert severity="error" className={classes.alert}>
+            Error while loading data from server!
+          </Alert>
+        ) : (
+          ''
+        )}
+        <Box mt={3}>
+          <Results
+            buses={data ? data.records : []}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        </Box>
+      </Container>
+    </div>
   );
 };
 

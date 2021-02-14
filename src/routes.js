@@ -11,6 +11,7 @@ import RegisterView from 'src/views/auth/RegisterView';
 import SettingsView from 'src/views/settings/SettingsView';
 import PassengerView from 'src/views/passenger';
 import BusView from 'src/views/bus';
+import SurveyView from './views/survey';
 const routes = [
   {
     path: 'app',
@@ -19,6 +20,7 @@ const routes = [
       { path: 'account', element: <AccountView /> },
       { path: 'passengers', element: <PassengerView /> },
       { path: 'buses', element: <BusView /> },
+      { path: 'surveys', element: <SurveyView /> },
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'products', element: <ProductListView /> },
       { path: 'settings', element: <SettingsView /> },
