@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import useAxios from 'axios-hooks';
-import {
-  Box,
-  Container
-  //makeStyles
-} from '@material-ui/core';
+import { Box, Container, makeStyles } from '@material-ui/core';
 
 import Results from './Results';
 import Toolbar from './Toolbar';
 
 import { Alert } from '@material-ui/lab';
 import { useBus } from '../../../states';
-//const useStyles = makeStyles(theme => ({
-//  root: {}
-//}));
+const useStyles = makeStyles(theme => ({
+  root: {},
+  alert: {
+    marginTop: '15px'
+  }
+}));
 
 const BusListView = () => {
+  const classes = useStyles();
   const [criteria, setCriteria] = useState('');
-  const [bus, { setSelectedBusID }] = useBus();
+  const [
+    bus,
+    { setSelectedBusID, setShowDetailView, setRefreshList }
+  ] = useBus();
   const [selectedID, setSelectedID] = useState(0);
   const [{ data, loading, error }, refetch] = useAxios(
     {
@@ -49,7 +52,12 @@ const BusListView = () => {
       performDelete();
     }
   }, [selectedID]);
-
+  useEffect(() => {
+    if (bus.refreshList) {
+      reloadList();
+      setRefreshList(false);
+    }
+  }, [bus.refreshList]);
   const reloadList = async () => {
     await refetch();
   };
@@ -58,6 +66,8 @@ const BusListView = () => {
     setCriteria(query);
   };
   const onEdit = id => {
+    console.log(bus.selectedBusID);
+    setShowDetailView(true);
     setSelectedBusID(id);
   };
   const onDelete = id => {
@@ -69,10 +79,16 @@ const BusListView = () => {
   return (
     <Container maxWidth={false}>
       <Toolbar onSearch={onSearch} onAdd={onAdd} />
-      {loading && <Alert severity="info">Loading...</Alert>}
-      {error && (
-        <Alert severity="error">Error while loading data from server!</Alert>
-      )}
+      {loading ||
+        (deleteLoading && (
+          <Alert severity="info" className={classes.alert}>
+            Loading...
+          </Alert>
+        ))}
+      {error ||
+        (deleteError && (
+          <Alert severity="error">Error while loading data from server!</Alert>
+        ))}
       <Box mt={3}>
         <Results
           buses={data ? data.records : []}

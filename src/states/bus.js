@@ -1,7 +1,8 @@
 export const initialState = {
   selectedBusID: 0,
   showListView: false,
-  showDetailView: false
+  showDetailView: false,
+  refreshList: false
 };
 
 export const setSelectedBusID = bus => value => {
@@ -12,5 +13,8 @@ export const setShowListView = bus => value => {
 };
 
 export const setShowDetailView = bus => value => {
-  bus.setState({ selectedPassengerID: value });
+  bus.setState({ showDetailView: value });
+};
+export const setRefreshList = bus => value => {
+  bus.setState({ refreshList: value });
 };

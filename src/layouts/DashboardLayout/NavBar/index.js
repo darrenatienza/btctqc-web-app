@@ -17,6 +17,7 @@ import {
   User as UserIcon,
   Users as UsersIcon
 } from 'react-feather';
+import { BiBus as BusIcon } from 'react-icons/bi';
 import NavItem from './NavItem';
 
 const user = {
@@ -35,6 +36,11 @@ const items = [
     href: '/app/passengers',
     icon: UsersIcon,
     title: 'Passengers'
+  },
+  {
+    href: '/app/buses',
+    icon: BusIcon,
+    title: 'Buses'
   },
   {
     href: '/app/account',
