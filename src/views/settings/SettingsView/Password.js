@@ -9,70 +9,90 @@ import {
   CardHeader,
   Divider,
   TextField,
+  InputAdornment,
+  SvgIcon,
   makeStyles
 } from '@material-ui/core';
-
-const useStyles = makeStyles(({
+import useAxios from 'axios-hooks';
+import { useForm, Controller } from 'react-hook-form';
+import { FiKey as KeyIcon } from 'react-icons/fi';
+const useStyles = makeStyles({
   root: {}
-}));
+});
 
-const Password = ({ className, ...rest }) => {
+const Password = ({ className, onSubmit, ...rest }) => {
   const classes = useStyles();
-  const [values, setValues] = useState({
-    password: '',
-    confirm: ''
-  });
-
-  const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
+  const methods = useForm();
+  const { handleSubmit, control, errors, setValue, setError } = methods;
+  const handleOnSubmit = data => {
+    if (data.password !== data.confirm) {
+      setError('password');
+      setError('confirm');
+    }
   };
-
   return (
     <form
       className={clsx(classes.root, className)}
       {...rest}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <Card>
-        <CardHeader
-          subheader="Update password"
-          title="Password"
-        />
+        <CardHeader subheader="Update your account password" title="Password" />
         <Divider />
         <CardContent>
-          <TextField
-            fullWidth
-            label="Password"
+          <Controller
+            control={control}
+            as={TextField}
+            defaultValue=""
             margin="normal"
-            name="password"
-            onChange={handleChange}
+            rules={{ required: true }}
+            fullWidth
+            label="Old Password"
+            name="old"
+            variant="standard"
             type="password"
-            value={values.password}
-            variant="outlined"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SvgIcon fontSize="small" color="action">
+                    <KeyIcon />
+                  </SvgIcon>
+                </InputAdornment>
+              )
+            }}
+            error={errors.password && true}
           />
-          <TextField
-            fullWidth
-            label="Confirm password"
+
+          <Controller
+            control={control}
+            as={TextField}
+            defaultValue=""
             margin="normal"
-            name="confirm"
-            onChange={handleChange}
+            rules={{ required: true }}
+            fullWidth
+            label="New Password"
+            name="password"
+            variant="filled"
             type="password"
-            value={values.confirm}
-            variant="outlined"
+            error={errors.password && true}
+          />
+          <Controller
+            control={control}
+            as={TextField}
+            defaultValue=""
+            margin="normal"
+            rules={{ required: true }}
+            fullWidth
+            label="Confirm New password"
+            name="confirm"
+            variant="filled"
+            type="password"
+            error={errors.confirm && true}
           />
         </CardContent>
         <Divider />
-        <Box
-          display="flex"
-          justifyContent="flex-end"
-          p={2}
-        >
-          <Button
-            color="primary"
-            variant="contained"
-          >
+        <Box display="flex" justifyContent="flex-end" p={2}>
+          <Button color="primary" variant="contained" type="submit">
             Update
           </Button>
         </Box>

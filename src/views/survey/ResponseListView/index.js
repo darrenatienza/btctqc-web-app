@@ -31,7 +31,7 @@ const ResponseListView = () => {
   );
   const onClose = () => {
     setSelectedSurveyID(0);
-    setShowResponseListView(true);
+    setShowResponseListView(false);
     setShowSurveyListView(true);
     console.log(survey.selectedSurveyID);
   };

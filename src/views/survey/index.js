@@ -1,9 +1,9 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
+import { Collapse, makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
 import SurveyListView from './SurveyListView';
 import ResponseListView from './ResponseListView';
-
+import { useSurvey } from '../../states';
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -14,11 +14,16 @@ const useStyles = makeStyles(theme => ({
 }));
 const SurveyView = () => {
   const classes = useStyles();
+  const [survey] = useSurvey();
   return (
     <div>
       <Page className={classes.root} title="Surveys">
-        <SurveyListView />
-        <ResponseListView />
+        <Collapse in={survey.showSurveyListView}>
+          <SurveyListView />
+        </Collapse>
+        <Collapse in={survey.showResponseListView}>
+          <ResponseListView />
+        </Collapse>
       </Page>
     </div>
   );

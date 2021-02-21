@@ -19,7 +19,7 @@ const BusListView = () => {
   const [criteria, setCriteria] = useState('');
   const [
     bus,
-    { setSelectedBusID, setShowDetailView, setRefreshList }
+    { setSelectedBusID, setShowListView, setShowDetailView, setRefreshList }
   ] = useBus();
   const [selectedID, setSelectedID] = useState(0);
   const [{ data, loading, error }, refetch] = useAxios(
@@ -67,6 +67,7 @@ const BusListView = () => {
   };
   const onEdit = id => {
     console.log(bus.selectedBusID);
+    setShowListView(false);
     setShowDetailView(true);
     setSelectedBusID(id);
   };
@@ -74,6 +75,8 @@ const BusListView = () => {
     setSelectedID(id);
   };
   const onAdd = () => {
+    setShowListView(false);
+    setShowDetailView(true);
     setSelectedBusID(-1);
   };
   return (

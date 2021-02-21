@@ -1,8 +1,9 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
+import { Collapse, makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
 import PassengerDetailView from './PassengerDetailView';
 import PassengerListView from './PassengerListView';
+import { usePassenger } from '../../states';
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -13,11 +14,16 @@ const useStyles = makeStyles(theme => ({
 }));
 const PassengerView = () => {
   const classes = useStyles();
+  const [passenger] = usePassenger();
   return (
     <div>
       <Page className={classes.root} title="Passengers">
-        <PassengerListView />
-        <PassengerDetailView />
+        <Collapse in={passenger.showListView}>
+          <PassengerListView />
+        </Collapse>
+        <Collapse in={passenger.showDetailView}>
+          <PassengerDetailView />
+        </Collapse>
       </Page>
     </div>
   );

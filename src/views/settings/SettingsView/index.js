@@ -1,9 +1,10 @@
 import React from 'react';
 import { Box, Container, makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
-import BusRecords from './BusRecords';
+import useAxios from 'axios-hooks';
 import Password from './Password';
-
+import { useCurrentUser } from '../../../states';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -15,16 +16,31 @@ const useStyles = makeStyles(theme => ({
 
 const SettingsView = () => {
   const classes = useStyles();
-
+  const navigate = useNavigate();
+  const [currentUser] = useCurrentUser();
+  const [{ data, loading, error, response }, executeChangePassword] = useAxios(
+    { url: `/password`, method: 'POST' },
+    {
+      manual: true
+    }
+  );
+  const onSubmit = async values => {
+    const { data } = await executeChangePassword({
+      data: {
+        username: currentUser.userName,
+        password: values.old,
+        newPassword: values.confirm
+      }
+    });
+    if (data.user_id > 0) {
+      navigate('/login');
+    }
+  };
   return (
     <Page className={classes.root} title="Settings">
       <Container maxWidth="lg">
-        <Box>
-          <BusRecords />
-        </Box>
-
         <Box mt={3}>
-          <Password />
+          <Password onSubmit={onSubmit} />
         </Box>
       </Container>
     </Page>

@@ -1,4 +1,5 @@
 import 'react-perfect-scrollbar/dist/css/styles.css';
+
 import React from 'react';
 import { useRoutes } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core';
@@ -9,10 +10,12 @@ import routes from 'src/routes';
 import { configure } from 'axios-hooks';
 import LRU from 'lru-cache';
 import Axios from 'axios';
+import Cookies from 'js-cookie';
 const App = () => {
   const routing = useRoutes(routes);
   const axios = Axios.create({
-    baseURL: process.env.REACT_APP_API_URL
+    baseURL: process.env.REACT_APP_API_URL,
+    withCredentials: true
   });
   const cache = new LRU({ max: 10 });
 

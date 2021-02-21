@@ -17,7 +17,10 @@ import { usePassenger } from '../../../states';
 
 const PassengerListView = () => {
   const [criteria, setCriteria] = useState('');
-  const [passenger, { setSelectedPassengerID }] = usePassenger();
+  const [
+    passenger,
+    { setSelectedPassengerID, setShowListView, setShowDetailView }
+  ] = usePassenger();
   const [{ data, loading, error }, refetch] = useAxios(
     {
       url: `/records/user_details?filter1=first_name,cs,${criteria}`,
@@ -39,6 +42,8 @@ const PassengerListView = () => {
     setCriteria(query);
   };
   const onView = id => {
+    setShowDetailView(true);
+    setShowListView(false);
     setSelectedPassengerID(id);
   };
   return (

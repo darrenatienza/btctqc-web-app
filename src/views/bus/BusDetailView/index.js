@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 const BusDetailView = () => {
   const [
     bus,
-    { setShowDetailView, setSelectedBusID, setRefreshList }
+    { setShowDetailView, setShowListView, setSelectedBusID, setRefreshList }
   ] = useBus();
   const classes = useStyles();
 
@@ -53,6 +53,7 @@ const BusDetailView = () => {
   }, [bus.selectedBusID]);
   const onClose = () => {
     setSelectedBusID(0);
+    setShowListView(true);
     setShowDetailView(false);
   };
   const onSubmit = async data => {
@@ -73,6 +74,8 @@ const BusDetailView = () => {
     }
     setRefreshList(true);
     setSelectedBusID(0);
+    setShowListView(true);
+    setShowDetailView(false);
   };
   return (
     <Container maxWidth="sm" className={classes.root}>

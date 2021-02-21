@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import useAxios from 'axios-hooks';
 import Alert from '@material-ui/lab/Alert';
+import { useCurrentUser } from '../../states';
+import Cookies from 'js-cookie';
 import {
   Box,
   Button,
@@ -31,13 +33,15 @@ const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const methods = useForm();
+  const [currentUser, { setUserName }] = useCurrentUser();
   const { handleSubmit, control, errors } = methods;
   // http request
   const [
     {
       //data,
       loading,
-      error
+      error,
+      response
     },
     executeLogin
   ] = useAxios(
@@ -53,9 +57,10 @@ const LoginView = () => {
         password: data.password
       }
     });
-
+    setUserName(data.username);
     user.user_id > 0 && navigate('/app/dashboard');
   };
+
   return (
     <Page className={classes.root} title="Login">
       <Box
