@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Container, //Grid,
+  Container,
+  Grid, //Grid,
   makeStyles
 } from '@material-ui/core';
 import Detail from './Detail';
 import { useBus } from '../../../states';
 import useAxios from 'axios-hooks';
+import QrCodePreview from './QrCodePreview';
 
 //import PassengerHistoryListView from '../PassengerHistoryListView';
 const useStyles = makeStyles(theme => ({
@@ -18,6 +20,7 @@ const BusDetailView = () => {
     { setShowDetailView, setShowListView, setSelectedBusID, setRefreshList }
   ] = useBus();
   const classes = useStyles();
+  const [busInfo, setBusInfo] = useState({ code: '', name: '' });
 
   const [{ data, loading, error }, refetch] = useAxios(
     {
@@ -47,8 +50,15 @@ const BusDetailView = () => {
     { manual: true }
   );
   useEffect(() => {
+    if (data) {
+      setBusInfo({ code: data.code, name: data.name });
+    }
+  }, [data]);
+  useEffect(() => {
     if (bus.selectedBusID > 0) {
       refetch();
+    } else {
+      setBusInfo({ code: '', name: '' });
     }
   }, [bus.selectedBusID]);
   const onClose = () => {
@@ -78,14 +88,21 @@ const BusDetailView = () => {
     setShowDetailView(false);
   };
   return (
-    <Container maxWidth="sm" className={classes.root}>
-      <Detail
-        detail={data}
-        onSubmit={onSubmit}
-        onClose={onClose}
-        isLoading={postLoading || putLoading}
-        isError={postError || putError}
-      />
+    <Container maxWidth="lg" className={classes.root}>
+      <Grid container spacing={3}>
+        <Grid item lg={6} xs={12}>
+          <Detail
+            detail={data}
+            onSubmit={onSubmit}
+            onClose={onClose}
+            isLoading={postLoading || putLoading}
+            isError={postError || putError}
+          />
+        </Grid>
+        <Grid item lg={6} xs={12}>
+          <QrCodePreview detail={busInfo} />
+        </Grid>
+      </Grid>
     </Container>
   );
 };

@@ -7,6 +7,7 @@ import Toolbar from './Toolbar';
 
 import { Alert } from '@material-ui/lab';
 import { useBus } from '../../../states';
+
 const useStyles = makeStyles(theme => ({
   root: {},
   alert: {
@@ -66,7 +67,6 @@ const BusListView = () => {
     setCriteria(query);
   };
   const onEdit = id => {
-    console.log(bus.selectedBusID);
     setShowListView(false);
     setShowDetailView(true);
     setSelectedBusID(id);
