@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import useAxios from 'axios-hooks';
@@ -33,7 +33,11 @@ const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const methods = useForm();
-  const [currentUser, { setUserName }] = useCurrentUser();
+  const [userID, setUserID] = useState(0);
+  const [
+    currentUser,
+    { setUserName, setCurrentUserID, setAccountType, loadCurrentUser }
+  ] = useCurrentUser();
   const { handleSubmit, control, errors } = methods;
   // http request
   const [
@@ -50,6 +54,7 @@ const LoginView = () => {
       manual: true
     }
   );
+
   const onSubmit = async data => {
     const { data: user } = await executeLogin({
       data: {
@@ -58,7 +63,14 @@ const LoginView = () => {
       }
     });
     setUserName(data.username);
-    user.user_id > 0 && navigate('/app/dashboard');
+
+    if (user.user_id > 0) {
+      setCurrentUserID(user.user_id);
+      setUserName(data.username);
+      console.log(user.admin);
+      setAccountType(user.admin ? 'admin' : 'passenger');
+      navigate('/app/dashboard');
+    }
   };
 
   return (

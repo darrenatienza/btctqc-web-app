@@ -18,7 +18,7 @@ const SettingsView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const [currentUser] = useCurrentUser();
-  const [{ data, loading, error, response }, executeChangePassword] = useAxios(
+  const [{ data, loading, error }, executeChangePassword] = useAxios(
     { url: `/password`, method: 'POST' },
     {
       manual: true
@@ -40,7 +40,7 @@ const SettingsView = () => {
     <Page className={classes.root} title="Settings">
       <Container maxWidth="lg">
         <Box mt={3}>
-          <Password onSubmit={onSubmit} />
+          <Password onSubmit={onSubmit} loading={loading} error={error} />
         </Box>
       </Container>
     </Page>

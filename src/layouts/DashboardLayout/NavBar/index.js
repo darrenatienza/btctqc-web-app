@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
@@ -23,7 +23,7 @@ import {
   BiGridAlt as GridAltIcon
 } from 'react-icons/bi';
 import NavItem from './NavItem';
-
+import { useCurrentUser } from '../../../states';
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
   jobTitle: 'Senior Developer',
@@ -32,37 +32,50 @@ const user = {
 
 const items = [
   {
+    id: 1,
     href: '/app/dashboard',
     icon: GridAltIcon,
     title: 'Dashboard'
   },
+
   {
-    href: '/app/passengers',
-    icon: UsersIcon,
-    title: 'Passengers'
-  },
-  {
-    href: '/app/buses',
-    icon: BusIcon,
-    title: 'Buses'
-  },
-  {
+    id: 4,
     href: '/app/surveys',
     icon: ListCheckIcon,
-    title: 'Surveys'
+    title: 'Surveys',
+    admin: true
   },
   {
+    id: 5,
     href: '/app/account',
     icon: UserIcon,
     title: 'Account'
   },
   {
+    id: 6,
     href: '/app/settings',
     icon: SettingsIcon,
     title: 'Settings'
   }
 ];
 
+const adminItems = [
+  ...items,
+  {
+    id: 2,
+    href: '/app/passengers',
+    icon: UsersIcon,
+    title: 'Passengers',
+    admin: true
+  },
+  {
+    id: 3,
+    href: '/app/buses',
+    icon: BusIcon,
+    title: 'Buses',
+    admin: true
+  }
+];
 const useStyles = makeStyles(() => ({
   mobileDrawer: {
     width: 256
@@ -82,6 +95,7 @@ const useStyles = makeStyles(() => ({
 const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
+  const [currentUser, { loadCurrentUser }] = useCurrentUser();
 
   useEffect(() => {
     if (openMobile && onMobileClose) {
@@ -103,20 +117,32 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           {user.name}
         </Typography>
         <Typography color="textSecondary" variant="body2">
-          {user.jobTitle}
+          {currentUser.accountType}
         </Typography>
       </Box>
       <Divider />
       <Box p={2}>
         <List>
-          {items.map(item => (
-            <NavItem
-              href={item.href}
-              key={item.title}
-              title={item.title}
-              icon={item.icon}
-            />
-          ))}
+          {currentUser.accountType == 'passenger' &&
+            items.map(item => (
+              <NavItem
+                href={item.href}
+                key={item.title}
+                title={item.title}
+                icon={item.icon}
+              />
+            ))}
+          {currentUser.accountType == 'admin' &&
+            adminItems
+              .sort((a, b) => (a.id > b.id ? 1 : -1))
+              .map(item => (
+                <NavItem
+                  href={item.href}
+                  key={item.title}
+                  title={item.title}
+                  icon={item.icon}
+                />
+              ))}
         </List>
       </Box>
       <Box flexGrow={1} />

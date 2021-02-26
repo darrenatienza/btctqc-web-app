@@ -16,11 +16,12 @@ import {
 import useAxios from 'axios-hooks';
 import { useForm, Controller } from 'react-hook-form';
 import { FiKey as KeyIcon } from 'react-icons/fi';
+import { Alert } from '@material-ui/lab';
 const useStyles = makeStyles({
   root: {}
 });
 
-const Password = ({ className, onSubmit, ...rest }) => {
+const Password = ({ className, onSubmit, loading, error, ...rest }) => {
   const classes = useStyles();
   const methods = useForm();
   const { handleSubmit, control, errors, setValue, setError } = methods;
@@ -89,8 +90,19 @@ const Password = ({ className, onSubmit, ...rest }) => {
             type="password"
             error={errors.confirm && true}
           />
+          {error && (
+            <Alert severity="error" color="error">
+              Error while saving your details.
+            </Alert>
+          )}
+          {loading && (
+            <Alert severity="info" color="info">
+              Please wait while saving your records
+            </Alert>
+          )}
         </CardContent>
         <Divider />
+
         <Box display="flex" justifyContent="flex-end" p={2}>
           <Button color="primary" variant="contained" type="submit">
             Update
