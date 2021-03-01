@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Collapse, makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
 import PassengerDetailView from './PassengerDetailView';
@@ -14,7 +14,11 @@ const useStyles = makeStyles(theme => ({
 }));
 const PassengerView = () => {
   const classes = useStyles();
-  const [passenger] = usePassenger();
+  const [passenger, { setShowDetailView, setShowListView }] = usePassenger();
+  useEffect(() => {
+    setShowDetailView(false);
+    setShowListView(true);
+  }, []);
   return (
     <div>
       <Page className={classes.root} title="Passengers">

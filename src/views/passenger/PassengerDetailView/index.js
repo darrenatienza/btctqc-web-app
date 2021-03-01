@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import {
   Container, //Grid,
+  Box,
   makeStyles
 } from '@material-ui/core';
 import Profile from './Profile';
@@ -12,7 +13,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const PassengerDetailView = () => {
-  const [passenger] = usePassenger();
+  const [passenger, { setShowListView, setShowDetailView }] = usePassenger();
   const classes = useStyles();
   const [{ data, loading, error }, refetch] = useAxios(
     {
@@ -26,9 +27,13 @@ const PassengerDetailView = () => {
       refetch();
     }
   }, [passenger.selectedPassengerID]);
+  const onBack = () => {
+    setShowDetailView(false);
+    setShowListView(true);
+  };
   return (
     <Container maxWidth="sm" className={classes.root}>
-      <Profile detail={data} />
+      <Profile detail={data} onBack={onBack} />
     </Container>
   );
 };

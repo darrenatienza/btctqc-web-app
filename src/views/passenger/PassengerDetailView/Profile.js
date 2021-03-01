@@ -11,7 +11,8 @@ import {
   Divider,
   Typography,
   CardHeader,
-  makeStyles
+  makeStyles,
+  Button
 } from '@material-ui/core';
 
 const detail = {
@@ -31,34 +32,47 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const Profile = ({ className, detail, ...rest }) => {
+const Profile = ({ className, detail, onBack, ...rest }) => {
   const classes = useStyles();
 
   return (
     <div className={clsx(classes.root, className)} {...rest}>
-      <Box mt={3}>
+      <Box>
+        <Box mb={3}>
+          <Button variant="outlined" color="primary" onClick={onBack}>
+            Back
+          </Button>
+        </Box>
+
         <Card>
           <CardHeader title="Passenger Details" />
           <Divider />
           <CardContent>
-            <Box alignItems="start" display="flex" flexDirection="column">
+            <Box
+              alignItems="start"
+              display="flex"
+              flexDirection="column"
+              pl={3}
+            >
               {detail && (
                 <>
                   <Typography color="textPrimary" gutterBottom variant="h3">
-                    {`${detail.first_name} ${detail.middle_name} ${detail.last_name}`}
+                    {` ${detail.first_name} ${detail.middle_name} ${detail.last_name}`}
                   </Typography>
                   <Typography color="textSecondary" variant="body1">
-                    {detail.address}
+                    {`Address: ${detail.address}`}
                   </Typography>
                   <Typography color="textSecondary" variant="body1">
-                    {detail.contact_number}
+                    {`Contact Number: ${detail.contact_number}`}
                   </Typography>
                   <Typography
                     className={classes.dateText}
                     color="textSecondary"
                     variant="body1"
                   >
-                    {`${moment(detail.create_time_stamp).format('YYYY-MM-DD')}
+                    {`Joined Date: ${moment(detail.create_time_stamp).format(
+                      'YYYY-MM-DD'
+                    )}
                       
                     `}
                   </Typography>
