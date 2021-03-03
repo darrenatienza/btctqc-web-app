@@ -15,6 +15,7 @@ import {
 import Page from 'src/components/Page';
 import Alert from '@material-ui/lab/Alert';
 import LoginBanner from '../../components/LoginBanner';
+import Logo from 'src/components/Logo';
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -24,8 +25,20 @@ const useStyles = makeStyles(theme => ({
   },
   loginBanner: {
     width: '100%',
-    height: '100%',
+
+    position: 'relative',
+    top: '-5em',
     borderRadius: '5px'
+  },
+
+  logo: {
+    width: '128px',
+    height: 'auto',
+    position: 'relative',
+    top: '0px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    zIndex: '1'
   }
 }));
 
@@ -33,6 +46,7 @@ const RegisterView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const methods = useForm();
+  const { handleSubmit, control, errors } = methods;
   // http request
   const [
     { data: postUserData, loading: postUserLoading, error: postUserError },
@@ -58,47 +72,41 @@ const RegisterView = () => {
   );
 
   // callbacks
-  const { handleSubmit, control, errors } = methods;
-  const onSubmit = async data => {
-    await executePostUser({
+
+  const onSubmitForm = async val => {
+    const { data: user_id } = await executePostUser({
       data: {
-        username: 'asdf',
-        password: 'asdf'
+        username: val.username,
+        password: val.password
       }
     });
-    //const { data: newUser } = await executePostUserDetail({
-    //  data: {
-    //    user_id: user_id,
-    //    first_name: data.firstName,
-    //    middle_name: data.middleName,
-    //    last_name: data.lastName,
-    //    address: data.address,
-    //    contact_number: data.contactNumber
-    //  }
-    //});
-    // success saving records
-    //newUser.user_id > 0 && navigate('/login');
-  };
-  const test = () => {
-    executePostUser({
+    const { data: user_detail_id } = await executePostUserDetail({
       data: {
-        username: 'asdf',
-        password: 'asdf'
+        user_id: user_id,
+        first_name: val.firstName,
+        middle_name: val.middleName,
+        last_name: val.lastName,
+        address: val.address,
+        contact_number: val.contactNumber
       }
     });
+    //success saving records
+    user_detail_id > 0 && navigate('/login');
   };
+
   // jsx
   return (
     <Page className={classes.root} title="Register">
       <Container maxWidth="md">
         <Grid container spacing={3}>
           <Grid item md={6} sm={12}>
-            {/**<Box display="flex" justifyContent="center">
+            <Box width="100%">
+              <Logo className={classes.logo} />
               <LoginBanner className={classes.loginBanner} />
-  </Box>**/}
+            </Box>
           </Grid>
           <Grid item md={6} sm={12}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmitForm)}>
               <Box>
                 <Typography color="textPrimary" variant="h2">
                   Create new account
@@ -125,13 +133,13 @@ const RegisterView = () => {
                 margin="normal"
                 name="password"
                 label="Password"
+                type="password"
                 control={control}
                 defaultValue=""
                 variant="filled"
                 rules={{ required: true }}
                 error={errors.password && true}
               />
-
               <Controller
                 as={TextField}
                 fullWidth
@@ -205,7 +213,7 @@ const RegisterView = () => {
                   color="primary"
                   fullWidth
                   size="large"
-                  onClick={test}
+                  type="submit"
                   variant="contained"
                 >
                   Sign up now

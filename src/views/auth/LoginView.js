@@ -43,7 +43,13 @@ const LoginView = () => {
   const [userID, setUserID] = useState(0);
   const [
     currentUser,
-    { setUserName, setCurrentUserID, setAccountType, loadCurrentUser }
+    {
+      setUserName,
+      setCurrentUserID,
+      setAccountType,
+      loadCurrentUser,
+      setCurrentUserDetailID
+    }
   ] = useCurrentUser();
   const { handleSubmit, control, errors } = methods;
   // http request
@@ -61,7 +67,18 @@ const LoginView = () => {
       manual: true
     }
   );
-
+  const [
+    { data: getDetailData, loading: getDetailLoading, error: getDetailError },
+    refetchUserDetails
+  ] = useAxios(
+    {
+      url: `/records/user_details?filter=user_id,eq,${currentUser.currentUserID}`,
+      method: 'GET'
+    },
+    {
+      manual: true
+    }
+  );
   const onSubmit = async data => {
     const { data: user } = await executeLogin({
       data: {
@@ -74,7 +91,8 @@ const LoginView = () => {
     if (user.user_id > 0) {
       setCurrentUserID(user.user_id);
       setUserName(data.username);
-
+      const { data: user_detail } = await refetchUserDetails();
+      console.log(getDetailData && getDetailData);
       setAccountType(user.admin ? 'admin' : 'passenger');
       user.admin ? navigate('/app/dashboard') : navigate('/app/surveys');
     }
@@ -157,10 +175,10 @@ const LoginView = () => {
                   </Button>
                 </Box>
 
-                <Typography color="textSecondary" variant="body1" align="right">
-                  Don&apos;t have an account?
+                <Typography color="textSecondary" variant="body1">
+                  Don&apos;t have an account?{' '}
                   <Link component={RouterLink} to="/register" variant="h6">
-                    Sign up
+                    Sign up here
                   </Link>
                 </Typography>
               </form>

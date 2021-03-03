@@ -29,8 +29,13 @@ const App = () => {
   axios.interceptors.request.use(
     async config => {
       const cookie = Cookies.get('PHPSESSID');
+      const currentUrl = window.location.pathname;
+      // check for deleted session
       if (!cookie) {
-        navigate('/login');
+        //public url must not require interceptor
+        if (currentUrl !== '/login' && currentUrl !== '/register') {
+          navigate('/login');
+        }
       }
       return config;
     },

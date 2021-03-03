@@ -39,19 +39,20 @@ const ProfileDetails = ({ className, ...rest }) => {
     executePut
   ] = useAxios(
     {
-      url: `/records/user_details/${currentUser.currentUserID}`,
+      url: `/records/user_details/${currentUser.currentUserDetailID}`,
       method: 'PUT'
     },
     {
       manual: true
     }
   );
+
   const [
-    { data, loading, error }
-    //refetch
+    { data: getDetailData, loading: getDetailLoading, error: getDetailError },
+    refetchUserDetails
   ] = useAxios(
     {
-      url: `/records/user_details/${currentUser.currentUserID}`,
+      url: `/records/user_details?filter=user_id,eq,${currentUser.currentUserID}`,
       method: 'GET'
     },
     {
@@ -65,14 +66,15 @@ const ProfileDetails = ({ className, ...rest }) => {
   }, [affectedRows]);
 
   useEffect(() => {
-    if (data) {
-      setValue('firstName', data.first_name);
-      setValue('middleName', data.middle_name);
-      setValue('lastName', data.last_name);
-      setValue('address', data.address);
-      setValue('contactNumber', data.contact_number);
+    if (getDetailData) {
+      console.log(getDetailData);
+      setValue('firstName', getDetailData.records[0].first_name);
+      setValue('middleName', getDetailData.records[0].middle_name);
+      setValue('lastName', getDetailData.records[0].last_name);
+      setValue('address', getDetailData.records[0].address);
+      setValue('contactNumber', getDetailData.records[0].contact_number);
     }
-  }, [data]);
+  }, [getDetailData]);
   //callback
   const onSubmit = async data => {
     if (currentUser.currentUserID > 0) {
@@ -172,13 +174,13 @@ const ProfileDetails = ({ className, ...rest }) => {
           </Grid>
           <Box mt={2}>
             {putError ||
-              (error && (
+              (getDetailError && (
                 <Alert severity="error" color="error">
                   Error while requesting to server.
                 </Alert>
               ))}
             {putLoading ||
-              (loading && (
+              (getDetailLoading && (
                 <Alert severity="info" color="info">
                   Saving...
                 </Alert>
