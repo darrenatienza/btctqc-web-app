@@ -12,10 +12,13 @@ import {
   Link,
   TextField,
   Typography,
-  makeStyles
+  makeStyles,
+  Card,
+  CardContent
 } from '@material-ui/core';
 
 import Page from 'src/components/Page';
+import Logo from 'src/components/Logo';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,6 +29,10 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     textAlign: 'center'
+  },
+  logo: {
+    width: '128px',
+    height: 'auto'
   }
 }));
 
@@ -67,9 +74,9 @@ const LoginView = () => {
     if (user.user_id > 0) {
       setCurrentUserID(user.user_id);
       setUserName(data.username);
-      console.log(user.admin);
+
       setAccountType(user.admin ? 'admin' : 'passenger');
-      navigate('/app/dashboard');
+      user.admin ? navigate('/app/dashboard') : navigate('/app/surveys');
     }
   };
 
@@ -82,69 +89,83 @@ const LoginView = () => {
         justifyContent="center"
       >
         <Container maxWidth="sm">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Box mb={3} className={classes.title}>
-              <Typography color="textPrimary" variant="h2">
-                Sign in
-              </Typography>
-            </Box>
+          <Card>
+            <CardContent>
+              <form>
+                <Box mb={3} className={classes.title}>
+                  <Typography color="textPrimary" variant="h2">
+                    Sign in
+                  </Typography>
+                </Box>
 
-            <Box mt={3} mb={1}>
-              <Typography align="center" color="textSecondary" variant="body1">
-                Bus Transport Contact Tracing Web Portal
-              </Typography>
-            </Box>
-            <Controller
-              as={TextField}
-              fullWidth
-              label="Email Address"
-              margin="normal"
-              name="username"
-              control={control}
-              defaultValue=""
-              error={errors.username && true}
-              rules={{ required: true }}
-            />
-            <Controller
-              as={TextField}
-              fullWidth
-              name="password"
-              control={control}
-              defaultValue=""
-              type="password"
-              margin="normal"
-              label="Password"
-              error={errors.password && true}
-              rules={{ required: true }}
-            />
-            {error && (
-              <Alert severity="error" color="error">
-                Invalid userName or password!
-              </Alert>
-            )}
-            {loading && (
-              <Alert severity="info" color="info">
-                Logging in...
-              </Alert>
-            )}
-            <Box my={2}>
-              <Button
-                color="primary"
-                fullWidth
-                size="large"
-                type="submit"
-                variant="contained"
-              >
-                Sign in now
-              </Button>
-            </Box>
-            <Typography color="textSecondary" variant="body1">
-              Don&apos;t have an account?
-              <Link component={RouterLink} to="/register" variant="h6">
-                Sign up
-              </Link>
-            </Typography>
-          </form>
+                <Box mt={3} mb={1}>
+                  <Typography
+                    align="center"
+                    color="textSecondary"
+                    variant="body1"
+                  >
+                    Bus Transport Contact Tracing Web Portal
+                  </Typography>
+                </Box>
+                <Box display="flex" justifyContent="center">
+                  <Logo className={classes.logo} />
+                </Box>
+
+                <Controller
+                  as={TextField}
+                  fullWidth
+                  label="User Name"
+                  margin="normal"
+                  name="username"
+                  control={control}
+                  defaultValue=""
+                  error={errors.username && true}
+                  rules={{ required: true }}
+                />
+                <Controller
+                  as={TextField}
+                  fullWidth
+                  name="password"
+                  control={control}
+                  defaultValue=""
+                  type="password"
+                  margin="normal"
+                  label="Password"
+                  error={errors.password && true}
+                  rules={{ required: true }}
+                />
+                {error && (
+                  <Alert severity="error" color="error">
+                    Invalid userName or password!
+                  </Alert>
+                )}
+                {loading && (
+                  <Alert severity="info" color="info">
+                    Logging in...
+                  </Alert>
+                )}
+                <Box my={2}>
+                  <Button
+                    color="primary"
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    onClick={handleSubmit(onSubmit)}
+                  >
+                    Sign in now
+                  </Button>
+                </Box>
+
+                <Typography color="textSecondary" variant="body1" align="right">
+                  Don&apos;t have an account?
+                  <Link component={RouterLink} to="/register" variant="h6">
+                    Sign up
+                  </Link>
+                </Typography>
+              </form>
+            </CardContent>
+          </Card>
         </Container>
       </Box>
     </Page>

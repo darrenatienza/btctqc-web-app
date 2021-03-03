@@ -6,7 +6,8 @@ import Results from './Results';
 import Toolbar from './Toolbar';
 
 import { Alert } from '@material-ui/lab';
-import { useSurvey } from '../../../states';
+import { useSurvey, useCurrentUser } from '../../../states';
+import PassengerSurveyResults from './PassengerSurveyResults';
 const useStyles = makeStyles(theme => ({
   root: {},
   alert: {
@@ -21,6 +22,7 @@ const SurveyListView = () => {
     survey,
     { setSelectedSurveyID, setShowSurveyListView, setShowResponseListView }
   ] = useSurvey();
+  const [currentUser] = useCurrentUser();
 
   const [{ data, loading, error }, refetch] = useAxios(
     {
@@ -49,7 +51,6 @@ const SurveyListView = () => {
   return (
     <div>
       <Container maxWidth={false}>
-        <Toolbar onSearch={onSearch} />
         {loading ? (
           <Alert severity="info" className={classes.alert}>
             Loading...
@@ -64,9 +65,19 @@ const SurveyListView = () => {
         ) : (
           ''
         )}
-        <Box mt={3}>
-          <Results onView={onView} surveys={data ? data.records : []} />
-        </Box>
+        {currentUser.accountType === 'admin' ? (
+          <>
+            <Toolbar onSearch={onSearch} />
+            <Box mt={3}>
+              <Results onView={onView} surveys={data ? data.records : []} />
+            </Box>
+          </>
+        ) : (
+          <PassengerSurveyResults
+            onView={onView}
+            surveys={data ? data.records : []}
+          />
+        )}
       </Container>
     </div>
   );

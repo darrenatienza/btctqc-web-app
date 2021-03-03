@@ -14,12 +14,18 @@ import {
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import Alert from '@material-ui/lab/Alert';
+import LoginBanner from '../../components/LoginBanner';
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     //height: '100%',
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
+  },
+  loginBanner: {
+    width: '100%',
+    height: '100%',
+    borderRadius: '5px'
   }
 }));
 
@@ -29,11 +35,7 @@ const RegisterView = () => {
   const methods = useForm();
   // http request
   const [
-    {
-      //data: postUserData,
-      loading: postUserLoading,
-      error: postUserError
-    },
+    { data: postUserData, loading: postUserLoading, error: postUserError },
     executePostUser
   ] = useAxios(
     { url: `/records/users`, method: 'POST' },
@@ -58,34 +60,42 @@ const RegisterView = () => {
   // callbacks
   const { handleSubmit, control, errors } = methods;
   const onSubmit = async data => {
-    console.log(data);
-    const { data: user_id } = await executePostUser({
+    await executePostUser({
       data: {
-        username: data.username,
-        password: data.password
+        username: 'asdf',
+        password: 'asdf'
       }
     });
-    const { data: user_detail_id } = await executePostUserDetail({
-      data: {
-        user_id: user_id,
-        first_name: data.firstName,
-        middle_name: data.middleName,
-        last_name: data.lastName,
-        address: data.address,
-        contact_number: data.contactNumber
-      }
-    });
+    //const { data: newUser } = await executePostUserDetail({
+    //  data: {
+    //    user_id: user_id,
+    //    first_name: data.firstName,
+    //    middle_name: data.middleName,
+    //    last_name: data.lastName,
+    //    address: data.address,
+    //    contact_number: data.contactNumber
+    //  }
+    //});
     // success saving records
-    user_detail_id > 0 && navigate('/login');
+    //newUser.user_id > 0 && navigate('/login');
   };
-
+  const test = () => {
+    executePostUser({
+      data: {
+        username: 'asdf',
+        password: 'asdf'
+      }
+    });
+  };
   // jsx
   return (
     <Page className={classes.root} title="Register">
       <Container maxWidth="md">
         <Grid container spacing={3}>
           <Grid item md={6} sm={12}>
-            Logo here
+            {/**<Box display="flex" justifyContent="center">
+              <LoginBanner className={classes.loginBanner} />
+  </Box>**/}
           </Grid>
           <Grid item md={6} sm={12}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -195,7 +205,7 @@ const RegisterView = () => {
                   color="primary"
                   fullWidth
                   size="large"
-                  type="submit"
+                  onClick={test}
                   variant="contained"
                 >
                   Sign up now

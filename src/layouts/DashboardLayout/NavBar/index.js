@@ -32,13 +32,6 @@ const user = {
 
 const items = [
   {
-    id: 1,
-    href: '/app/dashboard',
-    icon: GridAltIcon,
-    title: 'Dashboard'
-  },
-
-  {
     id: 4,
     href: '/app/surveys',
     icon: ListCheckIcon,
@@ -61,6 +54,13 @@ const items = [
 
 const adminItems = [
   ...items,
+  {
+    id: 1,
+    href: '/app/dashboard',
+    icon: GridAltIcon,
+    title: 'Dashboard'
+  },
+
   {
     id: 2,
     href: '/app/passengers',

@@ -9,11 +9,13 @@ import {
   Hidden,
   IconButton,
   Toolbar,
-  makeStyles
+  makeStyles,
+  Typography
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
+
 import Logo from 'src/components/Logo';
 
 const useStyles = makeStyles(() => ({
@@ -32,7 +34,15 @@ const TopBar = ({ className, onMobileNavOpen, onLogout, ...rest }) => {
     <AppBar className={clsx(classes.root, className)} elevation={0} {...rest}>
       <Toolbar>
         <RouterLink to="/">
-          <Logo />
+          <Box display="flex" alignItems="center">
+            <Box mr={3}>
+              <Logo />
+            </Box>
+
+            <Typography variant="h5" color="textPrimary">
+              Bus Transport Contact Tracing using QR Code System
+            </Typography>
+          </Box>
         </RouterLink>
         <Box flexGrow={1} />
         <Hidden mdDown>
