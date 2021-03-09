@@ -8,8 +8,9 @@ import {
   TextField,
   InputAdornment,
   SvgIcon,
-  //Grid,
-  makeStyles
+  Grid,
+  makeStyles,
+  Typography
   //Typography
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
@@ -28,26 +29,33 @@ const Toolbar = ({ className, onSearch, ...rest }) => {
 
   return (
     <div className={clsx(classes.root, className)} {...rest}>
-      <Box mt={3}>
-        <Box display="flex" justifyContent="flex-end">
-          <Box minWidth={500}>
-            <TextField
-              onChange={e => setQuery(e.target.value)}
-              fullWidth
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SvgIcon fontSize="small" color="action">
-                      <SearchIcon />
-                    </SvgIcon>
-                  </InputAdornment>
-                )
-              }}
-              placeholder="Passenger's Name"
-            />
+      <Grid container>
+        <Grid item item lg={6} xs={12}>
+          <Box mt={3}>
+            <Typography variant="h1">Passengers</Typography>
           </Box>
-        </Box>
-      </Box>
+        </Grid>
+        <Grid item lg={6} xs={12}>
+          <Box display="flex" justifyContent="flex-end" mt={3}>
+            <Box minWidth="100%">
+              <TextField
+                onChange={e => setQuery(e.target.value)}
+                fullWidth
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SvgIcon fontSize="small" color="action">
+                        <SearchIcon />
+                      </SvgIcon>
+                    </InputAdornment>
+                  )
+                }}
+                placeholder="Passenger's Name"
+              />
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
     </div>
   );
 };
