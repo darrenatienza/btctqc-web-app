@@ -40,7 +40,7 @@ const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const methods = useForm();
-
+  const [userID, setUserID] = useState(0);
   const [
     currentUser,
     {
@@ -67,31 +67,7 @@ const LoginView = () => {
       manual: true
     }
   );
-  const [
-    { data: getDetailData, loading: getDetailLoading, error: getDetailError },
-    refetchUserDetails
-  ] = useAxios(
-    {
-      url: `/records/user_details?filter=user_id,eq,${currentUser.currentUserID}`,
-      method: 'GET'
-    },
-    {
-      manual: true
-    }
-  );
-  useEffect(() => {
-    if (currentUser.currentUserID > 0) {
-      const performRefetchUserDetails = async () => {
-        const { data: userDetailArr } = await refetchUserDetails();
-        console.log(userDetailArr);
-        setCurrentUserDetailID(userDetailArr.records[0].user_detail_id);
-        currentUser.accountType === 'admin'
-          ? navigate('/app/dashboard')
-          : navigate('/app/surveys');
-      };
-      performRefetchUserDetails();
-    }
-  }, [currentUser.currentUserID]);
+
   const onSubmit = async data => {
     const { data: user } = await executeLogin({
       data: {
@@ -102,9 +78,10 @@ const LoginView = () => {
     setUserName(data.username);
 
     if (user.user_id > 0) {
+      setCurrentUserID(user.user_id);
       setUserName(data.username);
       setAccountType(user.admin ? 'admin' : 'passenger');
-      setCurrentUserID(user.user_id);
+      user.admin ? navigate('/app/dashboard') : navigate('/app/surveys');
     }
   };
 
@@ -132,7 +109,7 @@ const LoginView = () => {
                     color="textSecondary"
                     variant="body1"
                   >
-                    Bus Transport Contact Tracing using QR Code System
+                    Bus Transport Contact Tracing Web Portal
                   </Typography>
                 </Box>
                 <Box display="flex" justifyContent="center">

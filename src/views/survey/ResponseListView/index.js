@@ -54,7 +54,7 @@ const ResponseListView = () => {
           ''
         )}
         <Box mt={3}>
-          <Results responses={data ? data.records : []} />
+          <Results responses={(data && data.records) || []} />
         </Box>
       </Container>
     </div>

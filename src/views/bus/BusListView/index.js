@@ -99,7 +99,7 @@ const BusListView = () => {
         )}
         <Box mt={3}>
           <Results
-            buses={data ? data.records : []}
+            buses={(data && data.records) || []}
             onEdit={onEdit}
             onDelete={onDelete}
           />

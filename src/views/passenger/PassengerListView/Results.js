@@ -18,6 +18,7 @@ import {
 } from '@material-ui/core';
 import getInitials from 'src/utils/getInitials';
 import { Eye as EyeIcon } from 'react-feather';
+import { BiKey as KeyIcon } from 'react-icons/bi';
 const useStyles = makeStyles(theme => ({
   root: { paddingLeft: '15px', paddingRight: '15px' },
   avatar: {
@@ -25,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Results = ({ className, passengers, onView, ...rest }) => {
+const Results = ({ className, passengers, onView, onReset, ...rest }) => {
   const classes = useStyles();
 
   const [limit, setLimit] = useState(10);
@@ -73,6 +74,14 @@ const Results = ({ className, passengers, onView, ...rest }) => {
                       {moment(passenger.create_time_stamp).format('DD/MM/YYYY')}
                     </TableCell>
                     <TableCell padding="default">
+                      <IconButton
+                        aria-controls="simple-open-button"
+                        aria-haspopup="true"
+                        aria-label="Key"
+                        onClick={() => onReset(passenger.user_id)}
+                      >
+                        <KeyIcon />
+                      </IconButton>
                       <IconButton
                         aria-controls="simple-open-button"
                         aria-haspopup="true"
