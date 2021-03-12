@@ -69,7 +69,7 @@ const SurveyListView = () => {
           <>
             <Toolbar onSearch={onSearch} />
             <Box mt={3}>
-              <Results onView={onView} surveys={data ? data.records : []} />
+              <Results onView={onView} surveys={(data && data.records) || []} />
             </Box>
           </>
         ) : (

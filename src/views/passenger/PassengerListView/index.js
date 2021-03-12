@@ -19,15 +19,32 @@ import ConfirmationDialog from '../../shared/ConfirmationDialog';
 const PassengerListView = () => {
   const [criteria, setCriteria] = useState('');
   const [userID, setUserID] = useState(0);
+  // determines if the selected passenger is admin or not
+  const [isAdmin, setIsAdmin] = useState(false);
   const [
     passenger,
     { setSelectedPassengerID, setShowListView, setShowDetailView }
   ] = usePassenger();
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  const [openChangeRoleDialog, setOpenChangeRoleDialog] = useState(false);
   const [{ data, loading, error }, refetch] = useAxios(
     {
-      url: `/records/user_details?filter1=first_name,cs,${criteria}`,
+      url: `/records/view_user_details?filter1=first_name,cs,${criteria}&filter2=last_name,cs,${criteria}`,
       method: 'GET'
+    },
+    { manual: true }
+  );
+  const [
+    {
+      data: putUserRoleData,
+      loading: putUserRoleLoading,
+      error: putUserRoleError
+    },
+    executeUserRoleUpdate
+  ] = useAxios(
+    {
+      url: `/records/users/${userID}`,
+      method: 'PUT'
     },
     { manual: true }
   );
@@ -77,6 +94,24 @@ const PassengerListView = () => {
     setUserID(id);
     setOpenConfirmDialog(true);
   };
+  const handleChangeRole = (id, isAdmin) => {
+    setUserID(id);
+    setIsAdmin(isAdmin);
+    setOpenChangeRoleDialog(true);
+  };
+  const handleCloseChangeRoleDialog = async result => {
+    console.log(result);
+    if (result) {
+      await executeUserRoleUpdate({
+        data: {
+          admin: !isAdmin
+        }
+      });
+      await refetch();
+    }
+
+    setOpenChangeRoleDialog(false);
+  };
   return (
     <Container maxWidth={false}>
       <Toolbar onSearch={onSearch} />
@@ -89,15 +124,24 @@ const PassengerListView = () => {
           passengers={(data && data.records) || []}
           onView={onView}
           onReset={handleResetPassword}
+          onChangeRole={handleChangeRole}
         />
       </Box>
+      <ConfirmationDialog
+        title="Change User Role"
+        message={`Do you want to change user role to ${
+          !isAdmin ? 'Administrator' : 'Guest User'
+        }`}
+        open={openChangeRoleDialog}
+        onClose={handleCloseChangeRoleDialog}
+      />
+      {/* change user role "admin or not" */}
       <ConfirmationDialog
         title="Reset Passenger Password"
         message="Do you want to reset password. If yes, new password will be 'survey'."
         open={openConfirmDialog}
         onClose={handleCloseConfirmationDialog}
       />
-      {/* Todo: add button for admin account and for not admin */}
     </Container>
   );
 };

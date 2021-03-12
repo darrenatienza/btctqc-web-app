@@ -5,14 +5,6 @@ export const initialState = {
   accountType: localStorage.getItem('accountType') || ''
 };
 
-export const loadCurrentUser = currentUser => () => {
-  //currentUser.setState({
-  //  currentUserID: ,
-  //  userName: ,
-  //  accountType:
-  //});
-};
-
 export const setCurrentUserID = currentUser => value => {
   currentUser.setState({ currentUserID: value });
   localStorage.setItem('currentUserID', value);

@@ -15,7 +15,7 @@ import { useCurrentUser } from './states';
 const App = () => {
   const routing = useRoutes(routes);
   const navigate = useNavigate();
-  const [currentUser, { loadCurrentUser }] = useCurrentUser();
+  const [currentUser] = useCurrentUser();
   const axios = Axios.create({
     baseURL: process.env.REACT_APP_API_URL,
     withCredentials: true
@@ -26,43 +26,40 @@ const App = () => {
 
   configure({ axios, cache });
   // request interceptor to add token to request headers
-  //axios.interceptors.request.use(
-  //  async config => {
-  //    const cookie = Cookies.get('PHPSESSID');
-  //    const currentUrl = window.location.pathname;
-  //    // check for deleted session
-  //    if (!cookie) {
-  //      //public url must not require interceptor
-  //      if (currentUrl !== '/login' && currentUrl !== '/register') {
-  //        navigate('/login');
-  //      }
-  //    }
-  //    return config;
-  //  },
-  //  error => Promise.reject(error)
-  //);
-  useEffect(() => {
-    loadCurrentUser();
-  }, [currentUser.accountType]);
+  axios.interceptors.request.use(
+    async config => {
+      const cookie = Cookies.get('PHPSESSID');
+      const currentUrl = window.location.pathname;
+      // check for deleted session
+      if (!cookie) {
+        //public url must not require interceptor
+        if (currentUrl !== '/login' && currentUrl !== '/register') {
+          navigate('/login');
+        }
+      }
+      return config;
+    },
+    error => Promise.reject(error)
+  );
 
   axios.interceptors.response.use(
     response => {
-      //console.log(response);
       return response;
     },
     error => {
       const config = error.config;
 
+      // navigate to login for server error 403 and 401
       if (
         error.response &&
         (error.response.status === 403 || error.response.status === 401)
       ) {
         navigate('/login');
       }
-
       return Promise.reject(error);
     }
   );
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />

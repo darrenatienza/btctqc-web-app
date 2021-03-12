@@ -24,6 +24,19 @@ const SettingsView = () => {
       manual: true
     }
   );
+  const [
+    {
+      data: postLogoutData,
+      loading: postLogoutLoading,
+      error: postLogoutError
+    },
+    executeLogout
+  ] = useAxios(
+    { url: `/logout`, method: 'POST' },
+    {
+      manual: true
+    }
+  );
   const onSubmit = async values => {
     const { data } = await executeChangePassword({
       data: {
@@ -33,6 +46,7 @@ const SettingsView = () => {
       }
     });
     if (data.user_id > 0) {
+      await executeLogout();
       navigate('/login');
     }
   };

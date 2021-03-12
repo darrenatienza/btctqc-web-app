@@ -18,7 +18,7 @@ import {
 } from '@material-ui/core';
 import getInitials from 'src/utils/getInitials';
 import { Eye as EyeIcon } from 'react-feather';
-import { BiKey as KeyIcon } from 'react-icons/bi';
+import { FiKey as KeyIcon, FiUser as UserIcon } from 'react-icons/fi';
 const useStyles = makeStyles(theme => ({
   root: { paddingLeft: '15px', paddingRight: '15px' },
   avatar: {
@@ -26,7 +26,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Results = ({ className, passengers, onView, onReset, ...rest }) => {
+const Results = ({
+  className,
+  passengers,
+  onView,
+  onReset,
+  onChangeRole,
+  ...rest
+}) => {
   const classes = useStyles();
 
   const [limit, setLimit] = useState(10);
@@ -74,6 +81,17 @@ const Results = ({ className, passengers, onView, onReset, ...rest }) => {
                       {moment(passenger.create_time_stamp).format('DD/MM/YYYY')}
                     </TableCell>
                     <TableCell padding="default">
+                      <IconButton
+                        aria-controls="simple-open-button"
+                        aria-haspopup="true"
+                        aria-label="Role"
+                        color={passenger.admin ? 'primary' : 'default'}
+                        onClick={() =>
+                          onChangeRole(passenger.user_id, passenger.admin)
+                        }
+                      >
+                        <UserIcon />
+                      </IconButton>
                       <IconButton
                         aria-controls="simple-open-button"
                         aria-haspopup="true"
