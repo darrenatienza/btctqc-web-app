@@ -49,10 +49,9 @@ const DashboardLayout = () => {
     { manual: true }
   );
   const onLogout = async () => {
-    Cookies.remove('PHPSESSID');
+    await executeLogout();
     resetCurrentUser();
     navigate('/login');
-    await executeLogout();
   };
   return (
     <div className={classes.root}>

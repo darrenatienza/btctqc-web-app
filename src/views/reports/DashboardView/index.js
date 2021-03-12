@@ -37,6 +37,7 @@ const Dashboard = () => {
     },
     { manual: false }
   );
+
   useEffect(() => {
     data &&
       setSummary({
@@ -64,7 +65,7 @@ const Dashboard = () => {
   return (
     <Page className={classes.root} title="Dashboard">
       <Container maxWidth={false}>
-        <Box display="flex" justifyContent="center" maxWidth={1000}>
+        <Box margin="0 auto" maxWidth={1000}>
           <Card>
             <Box m={1}>
               <DashboardBanner className={classes.banner} />

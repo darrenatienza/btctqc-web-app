@@ -5,6 +5,7 @@ const DashboardBanner = props => {
     <img
       alt="DashboardBanner"
       src="/static/images/dashboard_banner.png"
+      width="100%"
       {...props}
     />
   );

@@ -41,7 +41,7 @@ const TotalPassengers = ({ className, passengerCount, ...rest }) => {
         <Grid container justify="space-between" spacing={3}>
           <Grid item>
             <Typography color="textSecondary" gutterBottom variant="h6">
-              TOTAL CUSTOMERS
+              TOTAL REGISTERED PASSENGERS
             </Typography>
             <Typography color="textPrimary" variant="h3">
               {passengerCount}

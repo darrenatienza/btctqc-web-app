@@ -67,6 +67,19 @@ const LoginView = () => {
       manual: true
     }
   );
+  const [
+    {
+      data: getUserDetailData,
+      loading: getUserDetailLoading,
+      error: getUserDetailError
+    },
+    getUserDetail
+  ] = useAxios(
+    { url: `/records/user_details`, method: 'GET' },
+    {
+      manual: true
+    }
+  );
 
   const onSubmit = async data => {
     const { data: user } = await executeLogin({
@@ -75,10 +88,19 @@ const LoginView = () => {
         password: data.password
       }
     });
+
     setUserName(data.username);
 
     if (user.user_id > 0) {
+      const { data: userDetail } = await getUserDetail({
+        params: {
+          filter: `user_id,eq,${user.user_id}`
+        }
+      });
+
       setCurrentUserID(user.user_id);
+      //set current user detail id to state
+      setCurrentUserDetailID(userDetail.records[0].user_detail_id);
       setUserName(data.username);
       setAccountType(user.admin ? 'admin' : 'passenger');
       user.admin ? navigate('/app/dashboard') : navigate('/app/surveys');

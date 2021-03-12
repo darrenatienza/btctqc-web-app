@@ -26,46 +26,43 @@ const App = () => {
 
   configure({ axios, cache });
   // request interceptor to add token to request headers
-  axios.interceptors.request.use(
-    async config => {
-      const cookie = Cookies.get('PHPSESSID');
-      const currentUrl = window.location.pathname;
-      // check for deleted session
-      if (!cookie) {
-        //public url must not require interceptor
-        if (currentUrl !== '/login' && currentUrl !== '/register') {
-          navigate('/login');
-        }
-      }
-      return config;
-    },
-    error => Promise.reject(error)
-  );
+  //axios.interceptors.request.use(
+  //  async config => {
+  //    const cookie = Cookies.get('PHPSESSID');
+  //    const currentUrl = window.location.pathname;
+  //    // check for deleted session
+  //    if (!cookie) {
+  //      //public url must not require interceptor
+  //      if (currentUrl !== '/login' && currentUrl !== '/register') {
+  //        navigate('/login');
+  //      }
+  //    }
+  //    return config;
+  //  },
+  //  error => Promise.reject(error)
+  //);
   useEffect(() => {
     loadCurrentUser();
   }, [currentUser.accountType]);
-  //axios.interceptors.response.use(
-  //  response => {
-  //    console.log(response);
-  //    return response;
-  //  },
-  //  error => {
-  //    const config = error.config;
-  //    console.log(error.status);
-  //    //if (error.status === 403) {
-  //    //  navigate('/login');
-  //    //
-  //    //  return axios(config);
-  //    //} else if (error.status === 401) {
-  //    //  console.log(error && error.response);
-  //    //  navigate('/login');
-  //    //
-  //    //  return axios(config);
-  //    //}
-  //
-  //    return Promise.reject(error);
-  //  }
-  //);
+
+  axios.interceptors.response.use(
+    response => {
+      //console.log(response);
+      return response;
+    },
+    error => {
+      const config = error.config;
+
+      if (
+        error.response &&
+        (error.response.status === 403 || error.response.status === 401)
+      ) {
+        navigate('/login');
+      }
+
+      return Promise.reject(error);
+    }
+  );
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
