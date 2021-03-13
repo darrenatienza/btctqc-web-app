@@ -64,7 +64,9 @@ const Results = ({ className, surveys, onView, ...rest }) => {
                 surveys.slice(0, limit).map(survey => (
                   <TableRow hover key={survey.survey_id}>
                     <TableCell padding="default">
-                      {moment(survey.create_time_stamp).format('DD/MM/YYYY')}
+                      {moment(survey.create_time_stamp).format(
+                        'DD/MM/YYYY HH:MM:SS'
+                      )}
                     </TableCell>
                     <TableCell>
                       <Box alignItems="center" display="flex">
