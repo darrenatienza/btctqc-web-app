@@ -7,6 +7,7 @@ import Toolbar from './Toolbar';
 
 import { Alert } from '@material-ui/lab';
 import { useBus } from '../../../states';
+import ConfirmationDialog from 'src/views/shared/ConfirmationDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -18,6 +19,10 @@ const useStyles = makeStyles(theme => ({
 const BusListView = () => {
   const classes = useStyles();
   const [criteria, setCriteria] = useState('');
+  const [
+    openConfirmationDeleteDialog,
+    setOpenConfirmationDeleteDialog
+  ] = useState(false);
   const [
     bus,
     { setSelectedBusID, setShowListView, setShowDetailView, setRefreshList }
@@ -44,15 +49,7 @@ const BusListView = () => {
   useEffect(() => {
     reloadList();
   }, [criteria]);
-  useEffect(() => {
-    if (selectedID > 0) {
-      const performDelete = async () => {
-        await executeDelete();
-        await reloadList();
-      };
-      performDelete();
-    }
-  }, [selectedID]);
+
   useEffect(() => {
     if (bus.refreshList) {
       reloadList();
@@ -73,11 +70,19 @@ const BusListView = () => {
   };
   const onDelete = id => {
     setSelectedID(id);
+    setOpenConfirmationDeleteDialog(true);
   };
   const onAdd = () => {
     setShowListView(false);
     setShowDetailView(true);
     setSelectedBusID(-1);
+  };
+  const handleCloseConfirmationDeleteDialog = async confirm => {
+    if (confirm) {
+      await executeDelete();
+      await reloadList();
+    }
+    setOpenConfirmationDeleteDialog(false);
   };
   return (
     <div>
@@ -104,6 +109,12 @@ const BusListView = () => {
             onDelete={onDelete}
           />
         </Box>
+        <ConfirmationDialog
+          title="Delete Bus Information"
+          message="Do you want to delete this record?"
+          open={openConfirmationDeleteDialog}
+          onClose={handleCloseConfirmationDeleteDialog}
+        />
       </Container>
     </div>
   );

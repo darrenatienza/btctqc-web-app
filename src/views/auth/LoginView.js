@@ -19,7 +19,8 @@ import {
 
 import Page from 'src/components/Page';
 import Logo from 'src/components/Logo';
-
+import { Autocomplete } from '@material-ui/lab';
+import RequestPasswordResetDialog from './RequestPasswordResetDialog';
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -33,6 +34,10 @@ const useStyles = makeStyles(theme => ({
   logo: {
     width: '128px',
     height: 'auto'
+  },
+  forgotPassword: {
+    marginLeft: 'auto',
+    textAlign: 'right'
   }
 }));
 
@@ -41,6 +46,11 @@ const LoginView = () => {
   const navigate = useNavigate();
   const methods = useForm();
   const [userID, setUserID] = useState(0);
+  const [userNotFound, setUserNotFound] = useState(false);
+  const [
+    openRequestResetPasswordDialog,
+    setOpenRequestResetPasswordDialog
+  ] = useState(false);
   const [
     currentUser,
     {
@@ -80,7 +90,24 @@ const LoginView = () => {
       manual: true
     }
   );
-
+  const [
+    { data: getUserData, loading: getUserLoading, error: getUserError },
+    fetchUser
+  ] = useAxios(
+    { url: `/records/users`, method: 'GET' },
+    {
+      manual: true
+    }
+  );
+  const [
+    { data: putUserData, loading: putUserLoading, error: putUserError },
+    putUser
+  ] = useAxios(
+    { url: `/records/users`, method: 'PUT' },
+    {
+      manual: true
+    }
+  );
   const onSubmit = async data => {
     const { data: user } = await executeLogin({
       data: {
@@ -88,16 +115,13 @@ const LoginView = () => {
         password: data.password
       }
     });
-
-    setUserName(data.username);
-
     if (user.user_id > 0) {
       const { data: userDetail } = await getUserDetail({
         params: {
           filter: `user_id,eq,${user.user_id}`
         }
       });
-
+      console.log(user);
       setCurrentUserID(user.user_id);
       //set current user detail id to state
       setCurrentUserDetailID(userDetail.records[0].user_detail_id);
@@ -106,7 +130,36 @@ const LoginView = () => {
       user.admin ? navigate('/app/dashboard') : navigate('/app/surveys');
     }
   };
-
+  const showRequestPasswordResetDialog = () => {
+    setUserNotFound(false);
+    setOpenRequestResetPasswordDialog(true);
+  };
+  const onCloseRequestPasswordResetDialog = async (userName, confirm) => {
+    if (confirm) {
+      // get user by user name
+      const { data } = await fetchUser({
+        params: { filter: `username,eq,${userName}` }
+      });
+      if (data.records.length > 0) {
+        setUserNotFound(false);
+        const userID = data.records[0].user_id;
+        console.log(userID);
+        // update the request password reset of user if found
+        await putUser({
+          url: `/records/users/${userID}`,
+          data: {
+            request_password_reset: 1
+          }
+        });
+        setOpenRequestResetPasswordDialog(false);
+      } else {
+        setUserNotFound(true);
+      }
+    } else {
+      // close only if cancel
+      setOpenRequestResetPasswordDialog(false);
+    }
+  };
   return (
     <Page className={classes.root} title="Login">
       <Box
@@ -183,16 +236,34 @@ const LoginView = () => {
                     Sign in now
                   </Button>
                 </Box>
-
-                <Typography color="textSecondary" variant="body1">
-                  Don&apos;t have an account?{' '}
-                  <Link component={RouterLink} to="/register" variant="h6">
-                    Sign up here
-                  </Link>
-                </Typography>
+                <Box display="flex">
+                  <Typography color="textSecondary" variant="body1">
+                    Don&apos;t have an account?{' '}
+                    <Link component={RouterLink} to="/register" variant="h6">
+                      Sign up here
+                    </Link>
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    className={classes.forgotPassword}
+                  >
+                    <Link
+                      onClick={() => showRequestPasswordResetDialog()}
+                      variant="h6"
+                      color="error"
+                    >
+                      Forgot Password?
+                    </Link>
+                  </Typography>
+                </Box>
               </form>
             </CardContent>
           </Card>
+          <RequestPasswordResetDialog
+            notFoundError={userNotFound}
+            open={openRequestResetPasswordDialog}
+            onClose={onCloseRequestPasswordResetDialog}
+          />
         </Container>
       </Box>
     </Page>

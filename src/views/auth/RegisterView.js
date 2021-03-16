@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.dark,
     //height: '100%',
     paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
+    paddingTop: theme.spacing(6)
   },
   loginBanner: {
     width: '100%',
@@ -97,7 +97,7 @@ const RegisterView = () => {
   // jsx
   return (
     <Page className={classes.root} title="Register">
-      <Container maxWidth="md">
+      <Container>
         <Grid container spacing={3}>
           <Grid item md={6} sm={12}>
             <Box width="100%">
@@ -115,87 +115,104 @@ const RegisterView = () => {
                   Please specify correct information here
                 </Typography>
               </Box>
-              <Controller
-                as={TextField}
-                fullWidth
-                margin="normal"
-                name="username"
-                label="User Name"
-                control={control}
-                defaultValue=""
-                variant="filled"
-                rules={{ required: true }}
-                error={errors.username && true}
-              />
-              <Controller
-                as={TextField}
-                fullWidth
-                margin="normal"
-                name="password"
-                label="Password"
-                type="password"
-                control={control}
-                defaultValue=""
-                variant="filled"
-                rules={{ required: true }}
-                error={errors.password && true}
-              />
-              <Controller
-                as={TextField}
-                fullWidth
-                margin="normal"
-                name="firstName"
-                label="First name"
-                control={control}
-                defaultValue=""
-                rules={{ required: true }}
-                error={errors.firstName && true}
-              />
-              <Controller
-                as={TextField}
-                fullWidth
-                margin="normal"
-                name="middleName"
-                label="Middle name"
-                control={control}
-                defaultValue=""
-                rules={{ required: true }}
-                error={errors.middleName && true}
-              />
-              <Controller
-                as={TextField}
-                fullWidth
-                margin="normal"
-                name="lastName"
-                label="Last name"
-                control={control}
-                defaultValue=""
-                rules={{ required: true }}
-                error={errors.lastName && true}
-              />
-              <Controller
-                as={TextField}
-                fullWidth
-                margin="normal"
-                name="address"
-                label="Complete Address"
-                control={control}
-                defaultValue=""
-                rules={{ required: true }}
-                error={errors.address && true}
-              />
-              <Controller
-                as={TextField}
-                fullWidth
-                margin="normal"
-                name="contactNumber"
-                label="Contact Number"
-                type="tel"
-                control={control}
-                defaultValue="+639"
-                rules={{ required: true }}
-                error={errors.contactNumber && true}
-              />
+              <Grid container spacing={3}>
+                <Grid item lg={12} xs={12}>
+                  <Controller
+                    as={TextField}
+                    fullWidth
+                    margin="normal"
+                    name="username"
+                    label="User Name"
+                    control={control}
+                    defaultValue=""
+                    variant="filled"
+                    rules={{ required: true }}
+                    error={errors.username && true}
+                  />
+                </Grid>
+                <Grid item lg={12} xs={12}>
+                  <Controller
+                    as={TextField}
+                    fullWidth
+                    margin="normal"
+                    name="password"
+                    label="Password"
+                    type="password"
+                    control={control}
+                    defaultValue=""
+                    variant="filled"
+                    rules={{ required: true }}
+                    error={errors.password && true}
+                  />
+                </Grid>
+                <Grid item lg={12} xs={12}>
+                  <Controller
+                    as={TextField}
+                    fullWidth
+                    margin="normal"
+                    name="firstName"
+                    label="First name"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: true }}
+                    error={errors.firstName && true}
+                  />
+                </Grid>
+                <Grid item lg={12} xs={12}>
+                  <Controller
+                    as={TextField}
+                    fullWidth
+                    margin="normal"
+                    name="middleName"
+                    label="Middle name"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: true }}
+                    error={errors.middleName && true}
+                  />
+                </Grid>
+                <Grid item lg={12} xs={12}>
+                  <Controller
+                    as={TextField}
+                    fullWidth
+                    margin="normal"
+                    name="lastName"
+                    label="Last name"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: true }}
+                    error={errors.lastName && true}
+                  />
+                </Grid>
+                <Grid item lg={12} xs={12}>
+                  <Controller
+                    as={TextField}
+                    fullWidth
+                    margin="normal"
+                    name="address"
+                    label="Complete Address"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: true }}
+                    error={errors.address && true}
+                  />
+                </Grid>
+                <Grid item lg={12} xs={12}>
+                  <Controller
+                    as={TextField}
+                    fullWidth
+                    margin="normal"
+                    name="contactNumber"
+                    label="Contact Number"
+                    type="tel"
+                    control={control}
+                    defaultValue="+639"
+                    rules={{ required: true }}
+                    error={errors.contactNumber && true}
+                  />
+                </Grid>
+              </Grid>
+
               {postUserDetailError ||
                 (postUserError && (
                   <Alert severity="error" color="error">

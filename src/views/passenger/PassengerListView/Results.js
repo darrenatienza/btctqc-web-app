@@ -14,8 +14,11 @@ import {
   TableRow,
   Typography,
   IconButton,
+  withStyles,
   makeStyles
 } from '@material-ui/core';
+
+import { green, purple, red } from '@material-ui/core/colors';
 import getInitials from 'src/utils/getInitials';
 import { Eye as EyeIcon } from 'react-feather';
 import { FiKey as KeyIcon, FiUser as UserIcon } from 'react-icons/fi';
@@ -25,7 +28,15 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2)
   }
 }));
-
+const ColorIconButton = withStyles(theme => ({
+  root: {
+    color: theme.palette.getContrastText(purple[500]),
+    backgroundColor: purple[500],
+    '&:hover': {
+      backgroundColor: purple[700]
+    }
+  }
+}))(IconButton);
 const Results = ({
   className,
   passengers,
@@ -92,10 +103,16 @@ const Results = ({
                       >
                         <UserIcon />
                       </IconButton>
+
                       <IconButton
                         aria-controls="simple-open-button"
                         aria-haspopup="true"
                         aria-label="Key"
+                        color={
+                          passenger.request_password_reset
+                            ? 'secondary'
+                            : 'default'
+                        }
                         onClick={() => onReset(passenger.user_id)}
                       >
                         <KeyIcon />

@@ -80,14 +80,15 @@ const PassengerListView = () => {
     setSelectedPassengerID(id);
   };
   const handleCloseConfirmationDialog = async result => {
-    console.log(result);
     if (result) {
       await resetPassword({
         data: {
-          password: 'survey'
+          password: 'survey',
+          request_password_reset: 0
         }
       });
     }
+    await refetch();
     setOpenConfirmDialog(false);
   };
   const handleResetPassword = id => {

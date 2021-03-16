@@ -26,7 +26,10 @@ const SurveyListView = () => {
 
   const [{ data, loading, error }, refetch] = useAxios(
     {
-      url: `/records/view_surveys?filter1=first_name,cs,${criteria}&filter2=last_name,cs,${criteria}&filter3=bus_name,cs,${criteria}&filter4=bus_code,cs,${criteria}`,
+      url:
+        currentUser.accountType == 'admin'
+          ? `/records/view_surveys?filter1=first_name,cs,${criteria}&filter2=last_name,cs,${criteria}&filter3=bus_name,cs,${criteria}&filter4=bus_code,cs,${criteria}`
+          : `/records/view_surveys?filter=user_id,eq,${currentUser.currentUserID}&filter1=bus_name,cs,${criteria}&filter2=bus_code,cs,${criteria}`,
       method: 'GET'
     },
     { manual: true }
