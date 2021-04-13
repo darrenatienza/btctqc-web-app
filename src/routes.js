@@ -12,12 +12,14 @@ import SettingsView from 'src/views/settings/SettingsView';
 import PassengerView from 'src/views/passenger';
 import BusView from 'src/views/bus';
 import SurveyView from './views/survey';
+import UsersView from './views/users';
 const routes = [
   {
     path: 'app',
     element: <DashboardLayout />,
     children: [
       { path: 'account', element: <AccountView /> },
+      { path: 'admins', element: <UsersView /> },
       { path: 'passengers', element: <PassengerView /> },
       { path: 'buses', element: <BusView /> },
       { path: 'surveys', element: <SurveyView /> },

@@ -32,20 +32,20 @@ const user = {
 
 const items = [
   {
-    id: 4,
+    id: 5,
     href: '/app/surveys',
     icon: ListCheckIcon,
     title: 'Surveys',
     admin: true
   },
   {
-    id: 5,
+    id: 6,
     href: '/app/account',
     icon: UserIcon,
     title: 'Account'
   },
   {
-    id: 6,
+    id: 7,
     href: '/app/settings',
     icon: SettingsIcon,
     title: 'Settings'
@@ -60,16 +60,22 @@ const adminItems = [
     icon: GridAltIcon,
     title: 'Dashboard'
   },
-
   {
     id: 2,
+    href: '/app/admins',
+    icon: UsersIcon,
+    title: 'Admins',
+    admin: true
+  },
+  {
+    id: 3,
     href: '/app/passengers',
     icon: UsersIcon,
     title: 'Passengers',
     admin: true
   },
   {
-    id: 3,
+    id: 4,
     href: '/app/buses',
     icon: BusIcon,
     title: 'Buses',

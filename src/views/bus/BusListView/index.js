@@ -84,6 +84,7 @@ const BusListView = () => {
     }
     setOpenConfirmationDeleteDialog(false);
   };
+  const handleViewSurvey = () => {};
   return (
     <div>
       <Container maxWidth={false}>
@@ -107,6 +108,7 @@ const BusListView = () => {
             buses={(data && data.records) || []}
             onEdit={onEdit}
             onDelete={onDelete}
+            onViewSurvey={handleViewSurvey}
           />
         </Box>
         <ConfirmationDialog

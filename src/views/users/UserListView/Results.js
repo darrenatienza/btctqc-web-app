@@ -14,32 +14,35 @@ import {
   TableRow,
   Typography,
   IconButton,
+  withStyles,
   makeStyles
 } from '@material-ui/core';
+
+import { green, purple, red } from '@material-ui/core/colors';
 import getInitials from 'src/utils/getInitials';
-import {
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  Eye as ViewIcon
-} from 'react-feather';
+import { Eye as EyeIcon } from 'react-feather';
+import { FiKey as KeyIcon, FiUser as UserIcon } from 'react-icons/fi';
 const useStyles = makeStyles(theme => ({
   root: { paddingLeft: '15px', paddingRight: '15px' },
   avatar: {
     marginRight: theme.spacing(2)
-  },
-  nameTableCell: {
-    [theme.breakpoints.up('md')]: {
-      width: '500px'
-    }
   }
 }));
-
+const ColorIconButton = withStyles(theme => ({
+  root: {
+    color: theme.palette.getContrastText(purple[500]),
+    backgroundColor: purple[500],
+    '&:hover': {
+      backgroundColor: purple[700]
+    }
+  }
+}))(IconButton);
 const Results = ({
   className,
-  buses,
-  onEdit,
-  onDelete,
-  onViewSurvey,
+  passengers,
+  onView,
+  onReset,
+  onChangeRole,
   ...rest
 }) => {
   const classes = useStyles();
@@ -58,57 +61,69 @@ const Results = ({
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
       <PerfectScrollbar>
-        <Box minWidth={450}>
+        <Box minWidth={1050}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell padding="default">Code</TableCell>
-                <TableCell>Name</TableCell>
+                <TableCell padding="default">Name</TableCell>
+                <TableCell>Address</TableCell>
+                <TableCell>Contact Number</TableCell>
                 <TableCell>Registration date</TableCell>
                 <TableCell padding="default"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {buses &&
-                buses.slice(0, limit).map(bus => (
-                  <TableRow hover key={bus.bus_info_id}>
+              {passengers &&
+                passengers.slice(0, limit).map(passenger => (
+                  <TableRow hover key={passenger.user_detail_id}>
                     <TableCell padding="default">
                       <Box alignItems="center" display="flex">
                         <Typography color="textPrimary" variant="body1">
-                          {bus.code}
+                          {`${passenger.first_name} ${getInitials(
+                            passenger.middle_name
+                          )}. ${passenger.last_name}`}
                         </Typography>
                       </Box>
                     </TableCell>
-                    <TableCell className={classes.nameTableCell}>
-                      {bus.name}
-                    </TableCell>
+                    <TableCell>{passenger.address}</TableCell>
+                    <TableCell>{passenger.contact_number}</TableCell>
+
                     <TableCell>
-                      {moment(bus.create_time_stamp).format('DD/MM/YYYY')}
+                      {moment(passenger.create_time_stamp).format('DD/MM/YYYY')}
                     </TableCell>
                     <TableCell padding="default">
                       <IconButton
-                        aria-controls="simple-view-button"
+                        aria-controls="simple-open-button"
                         aria-haspopup="true"
-                        aria-label="View"
-                        onClick={() => onViewSurvey(bus.bus_info_id)}
+                        aria-label="Role"
+                        color={passenger.admin ? 'primary' : 'default'}
+                        onClick={() =>
+                          onChangeRole(passenger.user_id, passenger.admin)
+                        }
                       >
-                        <ViewIcon />
+                        <UserIcon />
+                      </IconButton>
+
+                      <IconButton
+                        aria-controls="simple-open-button"
+                        aria-haspopup="true"
+                        aria-label="Key"
+                        color={
+                          passenger.request_password_reset
+                            ? 'secondary'
+                            : 'default'
+                        }
+                        onClick={() => onReset(passenger.user_id)}
+                      >
+                        <KeyIcon />
                       </IconButton>
                       <IconButton
-                        aria-controls="simple-edi-button"
+                        aria-controls="simple-open-button"
                         aria-haspopup="true"
-                        aria-label="Edit"
-                        onClick={() => onEdit(bus.bus_info_id)}
+                        aria-label="Open"
+                        onClick={() => onView(passenger.user_detail_id)}
                       >
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-controls="simple-delete-button"
-                        aria-haspopup="true"
-                        aria-label="Delete"
-                        onClick={() => onDelete(bus.bus_info_id)}
-                      >
-                        <DeleteIcon />
+                        <EyeIcon />
                       </IconButton>
                     </TableCell>
                   </TableRow>
@@ -119,7 +134,7 @@ const Results = ({
       </PerfectScrollbar>
       <TablePagination
         component="div"
-        count={buses ? buses.length : 0}
+        count={passengers ? passengers.length : 0}
         onChangePage={handlePageChange}
         onChangeRowsPerPage={handleLimitChange}
         page={page}
@@ -132,7 +147,7 @@ const Results = ({
 
 Results.propTypes = {
   className: PropTypes.string,
-  buses: PropTypes.array.isRequired
+  passengers: PropTypes.array.isRequired
 };
 
 export default Results;

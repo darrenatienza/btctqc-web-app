@@ -16,7 +16,7 @@ import ConfirmationDialog from '../../shared/ConfirmationDialog';
 //  root: {}
 //}));
 
-const PassengerListView = () => {
+const UserListView = () => {
   const [criteria, setCriteria] = useState('');
   const [userID, setUserID] = useState(0);
   // determines if the selected passenger is admin or not
@@ -29,7 +29,7 @@ const PassengerListView = () => {
   const [openChangeRoleDialog, setOpenChangeRoleDialog] = useState(false);
   const [{ data, loading, error }, refetch] = useAxios(
     {
-      url: `/records/view_user_details?filter1=first_name,cs,${criteria}&filter2=last_name,cs,${criteria}&filter=admin,eq,${0}`,
+      url: `/records/view_user_details?filter1=first_name,cs,${criteria}&filter2=last_name,cs,${criteria}&filter=admin,eq,${1}`,
       method: 'GET'
     },
     { manual: true }
@@ -147,4 +147,4 @@ const PassengerListView = () => {
   );
 };
 
-export default PassengerListView;
+export default UserListView;
