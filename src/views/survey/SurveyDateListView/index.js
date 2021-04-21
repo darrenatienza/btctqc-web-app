@@ -6,7 +6,7 @@ import Results from './Results';
 import Toolbar from './Toolbar';
 
 import { Alert } from '@material-ui/lab';
-import { useSurvey, useCurrentUser } from '../../../states';
+import { useSurvey, useCurrentUser, useBus } from '../../../states';
 import PassengerSurveyResults from './PassengerSurveyResults';
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -22,14 +22,13 @@ const SurveyDateListView = () => {
     survey,
     { setSelectedSurveyID, setShowSurveyListView, setShowResponseListView }
   ] = useSurvey();
+  // get only the selected bus info idcx
+  const [bus] = useBus();
   const [currentUser] = useCurrentUser();
 
   const [{ data, loading, error }, refetch] = useAxios(
     {
-      url:
-        currentUser.accountType == 'admin'
-          ? `/records/view_surveys?filter1=first_name,cs,${criteria}&filter2=last_name,cs,${criteria}&filter3=bus_name,cs,${criteria}&filter4=bus_code,cs,${criteria}`
-          : `/records/view_surveys?filter=user_id,eq,${currentUser.currentUserID}&filter1=bus_name,cs,${criteria}&filter2=bus_code,cs,${criteria}`,
+      url: `/records/view_surveys_dates?filter=bus_info_id,eq,${bus.selectedBusID}`,
       method: 'GET'
     },
     { manual: true }
@@ -86,4 +85,4 @@ const SurveyDateListView = () => {
   );
 };
 
-export default SurveyListView;
+export default SurveyDateListView;
