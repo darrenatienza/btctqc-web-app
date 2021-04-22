@@ -7,7 +7,7 @@ import Toolbar from './Toolbar';
 
 import { Alert } from '@material-ui/lab';
 import { useSurvey, useCurrentUser, useBus } from '../../../states';
-import PassengerSurveyResults from './PassengerSurveyResults';
+
 const useStyles = makeStyles(theme => ({
   root: {},
   alert: {
@@ -23,9 +23,16 @@ const SurveyDateListView = () => {
     { setSelectedSurveyID, setShowSurveyListView, setShowResponseListView }
   ] = useSurvey();
   // get only the selected bus info idcx
-  const [bus] = useBus();
-  const [currentUser] = useCurrentUser();
-
+  const [
+    bus,
+    {
+      setSelectedSurveyDate,
+      setSelectedPassengerID,
+      setShowSurveyDateListView,
+      setShowSurveyPassengerListView,
+      setShowSurveyInfoView
+    }
+  ] = useBus();
   const [{ data, loading, error }, refetch] = useAxios(
     {
       url: `/records/view_surveys_dates?filter=bus_info_id,eq,${bus.selectedBusID}`,
@@ -36,19 +43,16 @@ const SurveyDateListView = () => {
   const reloadList = async () => {
     await refetch();
   };
-
-  // search options
   useEffect(() => {
     reloadList();
-  }, [criteria]);
-
-  const onSearch = query => {
-    setCriteria(query);
-  };
-  const onView = id => {
-    setSelectedSurveyID(id);
-    setShowResponseListView(true);
-    setShowSurveyListView(false);
+  }, [bus.selectedBusID]);
+  useEffect(() => {
+    data && console.log(data.records);
+  }, [data]);
+  const onView = createTimeStamp => {
+    setSelectedSurveyDate(createTimeStamp);
+    setShowSurveyPassengerListView(true);
+    setShowSurveyDateListView(false);
   };
   return (
     <div>
@@ -67,19 +71,10 @@ const SurveyDateListView = () => {
         ) : (
           ''
         )}
-        {currentUser.accountType === 'admin' ? (
-          <>
-            <Toolbar onSearch={onSearch} />
-            <Box mt={3}>
-              <Results onView={onView} surveys={(data && data.records) || []} />
-            </Box>
-          </>
-        ) : (
-          <PassengerSurveyResults
-            onView={onView}
-            surveys={data ? data.records : []}
-          />
-        )}
+        <Toolbar />
+        <Box mt={3}>
+          <Results onView={onView} surveyDates={(data && data.records) || []} />
+        </Box>
       </Container>
     </div>
   );

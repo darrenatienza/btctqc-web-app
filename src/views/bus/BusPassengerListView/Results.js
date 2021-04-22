@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Results = ({ className, surveyDates, onView, ...rest }) => {
+const Results = ({ className, passengerList, onView, ...rest }) => {
   const classes = useStyles();
 
   const [limit, setLimit] = useState(10);
@@ -52,25 +52,27 @@ const Results = ({ className, surveyDates, onView, ...rest }) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell padding="default">Survey Date</TableCell>
-                <TableCell padding="default">Actions</TableCell>
+                <TableCell padding="default">Time</TableCell>
+                <TableCell padding="default">Passenger Name</TableCell>
+                <TableCell padding="default">View Surveys</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {surveyDates &&
-                surveyDates.slice(0, limit).map(survey => (
+              {passengerList &&
+                passengerList.slice(0, limit).map(survey => (
                   <TableRow hover key={survey.survey_id}>
                     <TableCell padding="default">
-                      {moment(survey.create_time_stamp).format(
-                        'DD/MM/YYYY HH:MM:SS'
-                      )}
+                      {moment(survey.create_time_stamp).format('HH:MM:SS')}
+                    </TableCell>
+                    <TableCell padding="default">
+                      {`${survey.first_name} ${survey.last_name}`}
                     </TableCell>
                     <TableCell padding="default">
                       <IconButton
                         aria-controls="simple-edi-button"
                         aria-haspopup="true"
                         aria-label="Edit"
-                        onClick={() => onView(survey.survey_id)}
+                        onClick={() => onView(survey.user_id, survey.survey_id)}
                       >
                         <EyeIcon />
                       </IconButton>
@@ -83,7 +85,7 @@ const Results = ({ className, surveyDates, onView, ...rest }) => {
       </PerfectScrollbar>
       <TablePagination
         component="div"
-        count={surveyDates ? surveyDates.length : 0}
+        count={passengerList ? passengerList.length : 0}
         onChangePage={handlePageChange}
         onChangeRowsPerPage={handleLimitChange}
         page={page}
@@ -96,7 +98,7 @@ const Results = ({ className, surveyDates, onView, ...rest }) => {
 
 Results.propTypes = {
   className: PropTypes.string,
-  surveyDates: PropTypes.array.isRequired
+  passengerList: PropTypes.array.isRequired
 };
 
 export default Results;

@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PassengerSurveyResults = ({ className, surveys, onView, ...rest }) => {
+const Results = ({ className, surveyDates, onView, ...rest }) => {
   const classes = useStyles();
 
   const [limit, setLimit] = useState(10);
@@ -52,29 +52,25 @@ const PassengerSurveyResults = ({ className, surveys, onView, ...rest }) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell padding="default">Create Date</TableCell>
-                <TableCell padding="default">Bus Code</TableCell>
-                <TableCell>Bus Name</TableCell>
-                <TableCell padding="default">Actions</TableCell>
+                <TableCell padding="default">Survey Date</TableCell>
+                <TableCell padding="default">View Passengers</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {surveys &&
-                surveys.slice(0, limit).map(survey => (
+              {surveyDates &&
+                surveyDates.slice(0, limit).map(survey => (
                   <TableRow hover key={survey.survey_id}>
                     <TableCell padding="default">
-                      {moment(survey.create_time_stamp).format('DD/MM/YYYY')}
+                      {moment(survey.create_time_stamp).format(
+                        'DD/MM/YYYY HH:MM:SS'
+                      )}
                     </TableCell>
-
-                    <TableCell padding="default">{survey.bus_code}</TableCell>
-                    <TableCell>{survey.bus_name}</TableCell>
-
                     <TableCell padding="default">
                       <IconButton
                         aria-controls="simple-edi-button"
                         aria-haspopup="true"
                         aria-label="Edit"
-                        onClick={() => onView(survey.survey_id)}
+                        onClick={() => onView(survey.create_time_stamp)}
                       >
                         <EyeIcon />
                       </IconButton>
@@ -87,7 +83,7 @@ const PassengerSurveyResults = ({ className, surveys, onView, ...rest }) => {
       </PerfectScrollbar>
       <TablePagination
         component="div"
-        count={surveys ? surveys.length : 0}
+        count={surveyDates ? surveyDates.length : 0}
         onChangePage={handlePageChange}
         onChangeRowsPerPage={handleLimitChange}
         page={page}
@@ -98,9 +94,9 @@ const PassengerSurveyResults = ({ className, surveys, onView, ...rest }) => {
   );
 };
 
-PassengerSurveyResults.propTypes = {
+Results.propTypes = {
   className: PropTypes.string,
-  surveys: PropTypes.array.isRequired
+  surveyDates: PropTypes.array.isRequired
 };
 
-export default PassengerSurveyResults;
+export default Results;

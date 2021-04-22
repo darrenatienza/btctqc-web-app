@@ -25,7 +25,13 @@ const BusListView = () => {
   ] = useState(false);
   const [
     bus,
-    { setSelectedBusID, setShowListView, setShowDetailView, setRefreshList }
+    {
+      setSelectedBusID,
+      setShowListView,
+      setShowDetailView,
+      setRefreshList,
+      setShowSurveyDateListView
+    }
   ] = useBus();
   const [selectedID, setSelectedID] = useState(0);
   const [{ data, loading, error }, refetch] = useAxios(
@@ -84,7 +90,11 @@ const BusListView = () => {
     }
     setOpenConfirmationDeleteDialog(false);
   };
-  const handleViewSurvey = () => {};
+  const handleViewSurveyDates = id => {
+    setSelectedBusID(id);
+    setShowSurveyDateListView(true);
+    setShowListView(false);
+  };
   return (
     <div>
       <Container maxWidth={false}>
@@ -108,7 +118,7 @@ const BusListView = () => {
             buses={(data && data.records) || []}
             onEdit={onEdit}
             onDelete={onDelete}
-            onViewSurvey={handleViewSurvey}
+            onViewSurvey={handleViewSurveyDates}
           />
         </Box>
         <ConfirmationDialog

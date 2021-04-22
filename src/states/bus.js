@@ -1,7 +1,13 @@
 export const initialState = {
   selectedBusID: 0,
+  selectedSurveyDate: '',
+  selectedPassengerID: 0,
+  selectedSurveyID: 0,
   showListView: true,
   showDetailView: false,
+  showSurveyDateListView: false,
+  showSurveyPassengerListView: false,
+  showSurveyInfoView: false,
   refreshList: false
 };
 
@@ -17,4 +23,22 @@ export const setShowDetailView = bus => value => {
 };
 export const setRefreshList = bus => value => {
   bus.setState({ refreshList: value });
+};
+export const setSelectedSurveyDate = bus => value => {
+  bus.setState({ selectedSurveyDate: value });
+};
+export const setSelectedPassengerID = bus => value => {
+  bus.setState({ selectedPassengerID: value });
+};
+export const setShowSurveyDateListView = bus => value => {
+  bus.setState({ showSurveyDateListView: value });
+};
+export const setShowSurveyPassengerListView = bus => value => {
+  bus.setState({ showSurveyPassengerListView: value });
+};
+export const setShowSurveyInfoView = bus => value => {
+  bus.setState({ showSurveyInfoView: value });
+};
+export const setSelectedSurveyID = bus => value => {
+  bus.setState({ selectedSurveyID: value });
 };

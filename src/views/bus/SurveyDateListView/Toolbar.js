@@ -29,10 +29,10 @@ const useStyles = makeStyles(themes => ({
 const Toolbar = ({ className, onSearch, ...rest }) => {
   const classes = useStyles();
   const [query, setQuery] = useState('');
-  useEffect(() => {
-    const timeOutId = setTimeout(() => onSearch(query), 500);
-    return () => clearTimeout(timeOutId);
-  }, [query]);
+  // useEffect(() => {
+  //   const timeOutId = setTimeout(() => onSearch(query), 500);
+  //   return () => clearTimeout(timeOutId);
+  // }, [query]);
 
   return (
     <div className={clsx(classes.root, className)} {...rest}>
@@ -45,24 +45,8 @@ const Toolbar = ({ className, onSearch, ...rest }) => {
         >
           <Grid item lg={6} md={6} xs={12}>
             <Box className={classes.addButton}>
-              <Typography variant="h1">Passenger Surveys</Typography>
+              <Typography variant="h1">Survey Dates</Typography>
             </Box>
-          </Grid>
-          <Grid item lg={6} md={6} xs={12}>
-            <TextField
-              onChange={e => setQuery(e.target.value)}
-              fullWidth
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SvgIcon fontSize="small" color="action">
-                      <SearchIcon />
-                    </SvgIcon>
-                  </InputAdornment>
-                )
-              }}
-              placeholder="Passenger Name, Bus Name"
-            />
           </Grid>
         </Grid>
       </Box>

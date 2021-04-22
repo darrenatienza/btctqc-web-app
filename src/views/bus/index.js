@@ -4,6 +4,9 @@ import Page from 'src/components/Page';
 import BusListView from './BusListView';
 import BusDetailView from './BusDetailView';
 import { useBus } from '../../states';
+import SurveyDateListView from './SurveyDateListView';
+import BusPassengerListView from './BusPassengerListView';
+import PassengerInfoSurveyView from './PassengerInfoSurveyView';
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -23,6 +26,15 @@ const BusView = () => {
         </Collapse>
         <Collapse in={bus.showDetailView}>
           <BusDetailView />
+        </Collapse>
+        <Collapse in={bus.showSurveyDateListView}>
+          <SurveyDateListView />
+        </Collapse>
+        <Collapse in={bus.showSurveyPassengerListView}>
+          <BusPassengerListView />
+        </Collapse>
+        <Collapse in={bus.showSurveyInfoView}>
+          <PassengerInfoSurveyView />
         </Collapse>
       </Page>
     </div>
