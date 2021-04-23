@@ -42,6 +42,16 @@ const PassengerInfoSurveyView = () => {
     { manual: true }
   );
   const [
+    { data: surveyData, loading: surveyLoading, error: surveyError },
+    refetchSurvey
+  ] = useAxios(
+    {
+      url: `/records/surveys/${bus.selectedSurveyID}`,
+      method: 'GET'
+    },
+    { manual: true }
+  );
+  const [
     {
       data: passengerInfoData,
       loading: passengerInfoLoading,
@@ -58,6 +68,7 @@ const PassengerInfoSurveyView = () => {
   const reload = async () => {
     await refetch();
     await refetchPassengerInfo();
+    await refetchSurvey();
   };
   useEffect(() => {
     console.log(bus.selectedPassengerID);
@@ -85,7 +96,10 @@ const PassengerInfoSurveyView = () => {
         )}
         <Toolbar />
         <Box mt={3}>
-          <Profile detail={passengerInfoData && passengerInfoData.records[0]} />
+          <Profile
+            detail={passengerInfoData && passengerInfoData.records[0]}
+            survey={(surveyData && surveyData) || {}}
+          />
           <Results responses={(data && data.records) || []} />
         </Box>
       </Container>

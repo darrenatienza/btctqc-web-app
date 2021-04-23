@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
@@ -24,18 +24,38 @@ const useStyles = makeStyles({
 const Password = ({ className, onSubmit, loading, error, ...rest }) => {
   const classes = useStyles();
   const methods = useForm();
+  const [showInvalidPasswordAlert, setShowInvalidPasswordAlert] = useState(
+    false
+  );
+  const [showOtherErrorAlert, setShowOtherErrorAlert] = useState(false);
+  const [passwordNotMatch, setPasswordNotMatch] = useState(false);
   const { handleSubmit, control, errors, setValue, setError } = methods;
   const handleOnSubmit = data => {
-    if (data.password !== data.confirm) {
-      setError('password');
-      setError('confirm');
+    if (data.newPassword !== data.confirmPassword) {
+      setError('newPassword', { shouldFocus: true });
+      setError('confirmPassword', { shouldFocus: true });
+      setPasswordNotMatch(true);
+    } else {
+      onSubmit(data);
+      setPasswordNotMatch(false);
     }
   };
+  useEffect(() => {
+    if (error) {
+      if (error.response.status === 403) {
+        setShowInvalidPasswordAlert(true);
+        setShowOtherErrorAlert(false);
+      } else {
+        setShowInvalidPasswordAlert(false);
+        setShowOtherErrorAlert(true);
+      }
+    }
+  }, [error]);
   return (
     <form
       className={clsx(classes.root, className)}
       {...rest}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(handleOnSubmit)}
     >
       <Card>
         <CardHeader subheader="Update your account password" title="Password" />
@@ -49,7 +69,7 @@ const Password = ({ className, onSubmit, loading, error, ...rest }) => {
             rules={{ required: true }}
             fullWidth
             label="Old Password"
-            name="old"
+            name="oldPassword"
             variant="standard"
             type="password"
             InputProps={{
@@ -61,7 +81,7 @@ const Password = ({ className, onSubmit, loading, error, ...rest }) => {
                 </InputAdornment>
               )
             }}
-            error={errors.password && true}
+            error={errors.oldPassword && true}
           />
 
           <Controller
@@ -72,10 +92,10 @@ const Password = ({ className, onSubmit, loading, error, ...rest }) => {
             rules={{ required: true }}
             fullWidth
             label="New Password"
-            name="password"
+            name="newPassword"
             variant="filled"
             type="password"
-            error={errors.password && true}
+            error={errors.newPassword && true}
           />
           <Controller
             control={control}
@@ -85,19 +105,42 @@ const Password = ({ className, onSubmit, loading, error, ...rest }) => {
             rules={{ required: true }}
             fullWidth
             label="Confirm New password"
-            name="confirm"
+            name="confirmPassword"
             variant="filled"
             type="password"
-            error={errors.confirm && true}
+            error={errors.confirmPassword && true}
           />
-          {error && (
-            <Alert severity="error" color="error">
-              Error while saving your details.
+          {showOtherErrorAlert && (
+            <Alert
+              severity="error"
+              color="error"
+              onClose={() => {
+                setShowOtherErrorAlert(false);
+              }}
+            >
+              Error while saving your details
             </Alert>
           )}
+          {showInvalidPasswordAlert && (
+            <Alert
+              severity="error"
+              color="error"
+              onClose={() => {
+                setShowInvalidPasswordAlert(false);
+              }}
+            >
+              Invalid Old Password
+            </Alert>
+          )}
+
           {loading && (
             <Alert severity="info" color="info">
               Please wait while saving your records
+            </Alert>
+          )}
+          {passwordNotMatch && (
+            <Alert severity="error" color="error">
+              Your new password and confirmation password not match!
             </Alert>
           )}
         </CardContent>

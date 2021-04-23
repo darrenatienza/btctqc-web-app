@@ -50,12 +50,10 @@ const App = () => {
       const config = error.config;
 
       // navigate to login for server error 403 and 401
-      if (
-        error.response &&
-        (error.response.status === 403 || error.response.status === 401)
-      ) {
+      if (error.response && error.response.status === 401) {
         navigate('/login');
       }
+
       return Promise.reject(error);
     }
   );

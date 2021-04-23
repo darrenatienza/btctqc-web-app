@@ -16,6 +16,7 @@ import Page from 'src/components/Page';
 import Alert from '@material-ui/lab/Alert';
 import LoginBanner from '../../components/LoginBanner';
 import Logo from 'src/components/Logo';
+import moment from 'moment';
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -41,7 +42,16 @@ const useStyles = makeStyles(theme => ({
     zIndex: '1'
   }
 }));
-
+const gender = [
+  {
+    value: 'male',
+    label: 'Male'
+  },
+  {
+    value: 'female',
+    label: 'Female'
+  }
+];
 const RegisterView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
@@ -87,7 +97,9 @@ const RegisterView = () => {
         middle_name: val.middleName,
         last_name: val.lastName,
         address: val.address,
-        contact_number: val.contactNumber
+        contact_number: val.contactNumber,
+        gender: val.gender,
+        birth_date: val.birthDate
       }
     });
     //success saving records
@@ -150,6 +162,21 @@ const RegisterView = () => {
                     as={TextField}
                     fullWidth
                     margin="normal"
+                    name="confirmPassword"
+                    label="Confirm Password"
+                    type="password"
+                    control={control}
+                    defaultValue=""
+                    variant="filled"
+                    rules={{ required: true }}
+                    error={errors.password && true}
+                  />
+                </Grid>
+                <Grid item lg={12} xs={12}>
+                  <Controller
+                    as={TextField}
+                    fullWidth
+                    margin="normal"
                     name="firstName"
                     label="First name"
                     control={control}
@@ -183,6 +210,41 @@ const RegisterView = () => {
                     rules={{ required: true }}
                     error={errors.lastName && true}
                   />
+                </Grid>
+                <Grid item lg={12} xs={12}>
+                  <Controller
+                    fullWidth
+                    margin="normal"
+                    as={TextField}
+                    type="date"
+                    name="birthDate"
+                    label="Birth Date"
+                    control={control}
+                    defaultValue={moment().format('YYYY-MM-DD')}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item lg={12} xs={12}>
+                  <Controller
+                    fullWidth
+                    margin="normal"
+                    as={TextField}
+                    select
+                    name="gender"
+                    label="Gender"
+                    control={control}
+                    defaultValue="male"
+                    variant="outlined"
+                    SelectProps={{
+                      native: true
+                    }}
+                  >
+                    {gender.map(option => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </Controller>
                 </Grid>
                 <Grid item lg={12} xs={12}>
                   <Controller

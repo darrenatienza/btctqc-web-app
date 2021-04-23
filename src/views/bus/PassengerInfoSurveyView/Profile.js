@@ -32,7 +32,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const Profile = ({ className, detail, onBack, ...rest }) => {
+const Profile = ({ className, detail, onBack, survey, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -70,6 +70,15 @@ const Profile = ({ className, detail, onBack, ...rest }) => {
                       
                     `}
                   </Typography>
+                  <Box mt={3}>
+                    <Typography color="textPrimary" variant="body1">
+                      {`Start Route: ${survey.start_route ?? 'Not specified'}`}
+                    </Typography>
+                    <Typography color="textSecondary" variant="body1">
+                      {`Destination Route: ${survey.destination_route ??
+                        'Not specified'}`}
+                    </Typography>
+                  </Box>
                 </>
               )}
             </Box>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Container, makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
 import useAxios from 'axios-hooks';
@@ -37,14 +37,16 @@ const SettingsView = () => {
       manual: true
     }
   );
+
   const onSubmit = async values => {
     const { data } = await executeChangePassword({
       data: {
         username: currentUser.userName,
-        password: values.old,
-        newPassword: values.confirm
+        password: values.oldPassword,
+        newPassword: values.newPassword
       }
     });
+
     if (data.user_id > 0) {
       await executeLogout();
       navigate('/login');

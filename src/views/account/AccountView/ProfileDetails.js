@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import useAxios from 'axios-hooks';
 import { useForm, Controller } from 'react-hook-form';
 import Alert from '@material-ui/lab/Alert';
-
+import moment from 'moment';
 import { useCurrentUser } from '../../../states';
 import {
   Box,
@@ -17,11 +17,21 @@ import {
   TextField,
   makeStyles
 } from '@material-ui/core';
+import { date } from 'yup';
 
 const useStyles = makeStyles(() => ({
   root: {}
 }));
-
+const gender = [
+  {
+    value: 'male',
+    label: 'Male'
+  },
+  {
+    value: 'female',
+    label: 'Female'
+  }
+];
 const ProfileDetails = ({ className, ...rest }) => {
   const [affectedRows, setAffectedRows] = useState(0);
   const classes = useStyles();
@@ -73,6 +83,11 @@ const ProfileDetails = ({ className, ...rest }) => {
       setValue('lastName', getDetailData.records[0].last_name);
       setValue('address', getDetailData.records[0].address);
       setValue('contactNumber', getDetailData.records[0].contact_number);
+      setValue(
+        'birthDate',
+        moment(getDetailData.records[0].birth_date).format('YYYY-MM-DD')
+      );
+      setValue('gender', getDetailData.records[0].gender);
     }
   }, [getDetailData]);
   //callback
@@ -84,7 +99,9 @@ const ProfileDetails = ({ className, ...rest }) => {
           middle_name: data.middleName,
           last_name: data.lastName,
           address: data.address,
-          contact_number: data.contactNumber
+          contact_number: data.contactNumber,
+          birth_date: data.birthDate,
+          gender: data.gender
         }
       });
       setAffectedRows(rows);
@@ -142,6 +159,41 @@ const ProfileDetails = ({ className, ...rest }) => {
                 variant="outlined"
                 error={errors.lastName && true}
               />
+            </Grid>
+            <Grid item md={8} xs={12}>
+              <Controller
+                fullWidth
+                margin="normal"
+                as={TextField}
+                type="date"
+                name="birthDate"
+                label="Birth Date"
+                control={control}
+                defaultValue={moment().format('YYYY-MM-DD')}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item md={4} xs={12}>
+              <Controller
+                fullWidth
+                margin="normal"
+                as={TextField}
+                select
+                name="gender"
+                label="Gender"
+                control={control}
+                defaultValue="male"
+                variant="outlined"
+                SelectProps={{
+                  native: true
+                }}
+              >
+                {gender.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </Controller>
             </Grid>
             <Grid item md={6} xs={12}>
               <Controller
