@@ -77,6 +77,10 @@ const PassengerInfoSurveyView = () => {
   useEffect(() => {
     passengerInfoData && console.log(passengerInfoData.records[0]);
   }, [passengerInfoData]);
+  const handleOnBack = () => {
+    setShowSurveyPassengerListView(true);
+    setShowSurveyInfoView(false);
+  };
   return (
     <div>
       <Container maxWidth={false}>
@@ -94,13 +98,15 @@ const PassengerInfoSurveyView = () => {
         ) : (
           ''
         )}
-        <Toolbar />
+        <Toolbar onBack={handleOnBack} />
         <Box mt={3}>
           <Profile
             detail={passengerInfoData && passengerInfoData.records[0]}
             survey={(surveyData && surveyData) || {}}
           />
-          <Results responses={(data && data.records) || []} />
+          <Box mt={3}>
+            <Results responses={(data && data.records) || []} />
+          </Box>
         </Box>
       </Container>
     </div>

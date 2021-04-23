@@ -45,6 +45,7 @@ const Password = ({ className, onSubmit, loading, error, ...rest }) => {
       if (error.response.status === 403) {
         setShowInvalidPasswordAlert(true);
         setShowOtherErrorAlert(false);
+        setError('oldPassword', { shouldFocus: true });
       } else {
         setShowInvalidPasswordAlert(false);
         setShowOtherErrorAlert(true);

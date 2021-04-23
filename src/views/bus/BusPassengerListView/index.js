@@ -52,6 +52,10 @@ const BusPassengerListView = () => {
     setShowSurveyInfoView(true);
     setShowSurveyPassengerListView(false);
   };
+  const handleOnBack = () => {
+    setShowSurveyDateListView(true);
+    setShowSurveyPassengerListView(false);
+  };
   return (
     <div>
       <Container maxWidth={false}>
@@ -69,7 +73,7 @@ const BusPassengerListView = () => {
         ) : (
           ''
         )}
-        <Toolbar />
+        <Toolbar onBack={handleOnBack} />
         <Box mt={3}>
           <Results
             onView={onView}

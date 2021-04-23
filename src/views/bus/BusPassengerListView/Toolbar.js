@@ -26,7 +26,7 @@ const useStyles = makeStyles(themes => ({
   search: {}
 }));
 
-const Toolbar = ({ className, onSearch, ...rest }) => {
+const Toolbar = ({ className, onSearch, onBack, ...rest }) => {
   const classes = useStyles();
   const [query, setQuery] = useState('');
   // useEffect(() => {
@@ -37,18 +37,14 @@ const Toolbar = ({ className, onSearch, ...rest }) => {
   return (
     <div className={clsx(classes.root, className)} {...rest}>
       <Box mt={3}>
-        <Grid
-          container
-          direction="row"
-          justify="space-between"
-          alignItems="flex-start"
-        >
-          <Grid item lg={6} md={6} xs={12}>
-            <Box className={classes.addButton}>
-              <Typography variant="h1">Passenger List</Typography>
-            </Box>
-          </Grid>
-        </Grid>
+        <Box display="flex">
+          <Typography variant="h1">Passenger List</Typography>
+          <Box marginLeft="auto">
+            <Button variant="outlined" color="primary" onClick={onBack}>
+              Back
+            </Button>
+          </Box>
+        </Box>
       </Box>
     </div>
   );

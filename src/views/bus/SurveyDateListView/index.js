@@ -30,7 +30,8 @@ const SurveyDateListView = () => {
       setSelectedPassengerID,
       setShowSurveyDateListView,
       setShowSurveyPassengerListView,
-      setShowSurveyInfoView
+      setShowSurveyInfoView,
+      setShowListView
     }
   ] = useBus();
   const [{ data, loading, error }, refetch] = useAxios(
@@ -54,6 +55,10 @@ const SurveyDateListView = () => {
     setShowSurveyPassengerListView(true);
     setShowSurveyDateListView(false);
   };
+  const handleOnBack = () => {
+    setShowSurveyDateListView(false);
+    setShowListView(true);
+  };
   return (
     <div>
       <Container maxWidth={false}>
@@ -71,7 +76,7 @@ const SurveyDateListView = () => {
         ) : (
           ''
         )}
-        <Toolbar />
+        <Toolbar onBack={handleOnBack} />
         <Box mt={3}>
           <Results onView={onView} surveyDates={(data && data.records) || []} />
         </Box>

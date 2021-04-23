@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import useAxios from 'axios-hooks';
@@ -56,7 +56,10 @@ const RegisterView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const methods = useForm();
-  const { handleSubmit, control, errors } = methods;
+  const [showPasswordNotMatchAlert, setShowPasswordNotMatchAlert] = useState(
+    false
+  );
+  const { handleSubmit, control, errors, setError } = methods;
   // http request
   const [
     { data: postUserData, loading: postUserLoading, error: postUserError },
@@ -84,26 +87,33 @@ const RegisterView = () => {
   // callbacks
 
   const onSubmitForm = async val => {
-    const { data: user_id } = await executePostUser({
-      data: {
-        username: val.username,
-        password: val.password
-      }
-    });
-    const { data: user_detail_id } = await executePostUserDetail({
-      data: {
-        user_id: user_id,
-        first_name: val.firstName,
-        middle_name: val.middleName,
-        last_name: val.lastName,
-        address: val.address,
-        contact_number: val.contactNumber,
-        gender: val.gender,
-        birth_date: val.birthDate
-      }
-    });
-    //success saving records
-    user_detail_id > 0 && navigate('/login');
+    if (val.password !== val.confirmPassword) {
+      setError('password', { shouldFocus: true });
+      setError('confirmPassword', { shouldFocus: true });
+      setShowPasswordNotMatchAlert(true);
+    } else {
+      setShowPasswordNotMatchAlert(false);
+      const { data: user_id } = await executePostUser({
+        data: {
+          username: val.username,
+          password: val.password
+        }
+      });
+      const { data: user_detail_id } = await executePostUserDetail({
+        data: {
+          user_id: user_id,
+          first_name: val.firstName,
+          middle_name: val.middleName,
+          last_name: val.lastName,
+          address: val.address,
+          contact_number: val.contactNumber,
+          gender: val.gender,
+          birth_date: val.birthDate
+        }
+      });
+      //success saving records
+      user_detail_id > 0 && navigate('/login');
+    }
   };
 
   // jsx
@@ -287,6 +297,17 @@ const RegisterView = () => {
                     Please wait while saving your records
                   </Alert>
                 ))}
+              {showPasswordNotMatchAlert && (
+                <Alert
+                  severity="error"
+                  color="error"
+                  onClose={() => {
+                    setShowPasswordNotMatchAlert(false);
+                  }}
+                >
+                  Your password and confirmation password not match!
+                </Alert>
+              )}
               <Box my={2}>
                 <Button
                   color="primary"

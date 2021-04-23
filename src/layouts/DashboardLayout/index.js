@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import useAxios from 'axios-hooks';
 import { useCurrentUser } from '../../states';
+import ConfirmationDialog from 'src/views/shared/ConfirmationDialog';
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -39,6 +40,7 @@ const useStyles = makeStyles(theme => ({
 const DashboardLayout = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const [openLogOutConfirmation, setOpenLogoutConfirmation] = useState(false);
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
   const [currentUser, { resetCurrentUser }] = useCurrentUser();
   const [{ data, loading, error }, executeLogout] = useAxios(
@@ -53,11 +55,18 @@ const DashboardLayout = () => {
     resetCurrentUser();
     navigate('/login');
   };
+  const onCloseLogOutConfirmation = confirm => {
+    if (confirm) {
+      onLogout();
+    } else {
+      setOpenLogoutConfirmation(false);
+    }
+  };
   return (
     <div className={classes.root}>
       <TopBar
         onMobileNavOpen={() => setMobileNavOpen(true)}
-        onLogout={onLogout}
+        onLogout={() => setOpenLogoutConfirmation(true)}
       />
       <NavBar
         onMobileClose={() => setMobileNavOpen(false)}
@@ -67,6 +76,12 @@ const DashboardLayout = () => {
         <div className={classes.contentContainer}>
           <div className={classes.content}>
             <Outlet />
+            <ConfirmationDialog
+              title="Logout"
+              message="Are you sure you want to logout"
+              open={openLogOutConfirmation}
+              onClose={onCloseLogOutConfirmation}
+            />
           </div>
         </div>
       </div>
