@@ -126,14 +126,17 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           {currentUser.accountType == 'admin' &&
             adminItems
               .sort((a, b) => (a.id > b.id ? 1 : -1))
-              .map(item => (
-                <NavItem
-                  href={item.href}
-                  key={item.title}
-                  title={item.title}
-                  icon={item.icon}
-                />
-              ))}
+              .map(
+                item =>
+                  item.id !== 5 && (
+                    <NavItem
+                      href={item.href}
+                      key={item.title}
+                      title={item.title}
+                      icon={item.icon}
+                    />
+                  )
+              )}
         </List>
       </Box>
       <Box flexGrow={1} />
