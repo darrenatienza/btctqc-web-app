@@ -39,14 +39,29 @@ const RequestPasswordResetDialog = ({ notFoundError, open, onClose }) => {
         />
         <Box mt={2}>
           <Alert severity="info">
-            <AlertTitle>Information</AlertTitle>
-            For reseting your password, In pariatur culpa minim excepteur
-            eiusmod. In dolore excepteur reprehenderit exercitation tempor sint
-            do sunt cillum minim. Consectetur fugiat minim tempor amet. Magna
-            proident excepteur occaecat voluptate id veniam anim irure labore
-            tempor aute labore mollit laboris. Culpa qui consequat pariatur enim
-            exercitation anim sunt pariatur. Quis proident consequat ut aute
-            dolor commodo.
+            <AlertTitle>Fix problems with your password</AlertTitle>
+            <p>
+              If you're having trouble resetting your password or can’t sign in
+              to your account, or If you forget your password, you can request
+              to reset your password by emailing us in ({' '}
+              <span style={{ fontWeight: 'bold' }}>BusTrans@gmail.com</span> ).
+            </p>
+            <br />
+            <p style={{ fontWeight: 'bold' }}>Procedure</p>
+            <p>
+              <span style={{ fontWeight: 'bold' }}>1.</span>By emailing us pls
+              include your full name or the account name, phone number, and
+              birth date for confirmation that you are the owner of the account.
+            </p>
+            <p>
+              <span style={{ fontWeight: 'bold' }}>2.</span> Wait for the admin
+              to respond to the request.
+            </p>
+            <p>
+              <span style={{ fontWeight: 'bold' }}>3.</span> when the admin
+              respond the passenger can login again through its user name and by
+              using its default password.
+            </p>
           </Alert>
         </Box>
       </DialogContent>
