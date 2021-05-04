@@ -5,16 +5,16 @@ export const initialState = {
   refreshList: false
 };
 
-export const setSelectedBusID = bus => value => {
-  bus.setState({ selectedBusID: value });
+export const setSelectedUserID = users => value => {
+  users.setState({ selectedUserID: value });
 };
-export const setShowListView = bus => value => {
-  bus.setState({ showListView: value });
+export const setShowListView = users => value => {
+  users.setState({ showListView: value });
 };
 
-export const setShowDetailView = bus => value => {
-  bus.setState({ showDetailView: value });
+export const setShowDetailView = users => value => {
+  users.setState({ showDetailView: value });
 };
-export const setRefreshList = bus => value => {
-  bus.setState({ refreshList: value });
+export const setRefreshList = users => value => {
+  users.setState({ refreshList: value });
 };

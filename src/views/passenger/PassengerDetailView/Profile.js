@@ -60,6 +60,12 @@ const Profile = ({ className, detail, onBack, ...rest }) => {
                     {` ${detail.first_name} ${detail.middle_name} ${detail.last_name}`}
                   </Typography>
                   <Typography color="textSecondary" variant="body1">
+                    {`Gender: ${detail.gender}`}
+                  </Typography>
+                  <Typography color="textSecondary" variant="body1">
+                    {`Age: ${moment().diff(detail.birth_date, 'years', false)}`}
+                  </Typography>
+                  <Typography color="textSecondary" variant="body1">
                     {`Address: ${detail.address}`}
                   </Typography>
                   <Typography color="textSecondary" variant="body1">

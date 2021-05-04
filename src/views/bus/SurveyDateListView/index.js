@@ -4,7 +4,7 @@ import { Box, Container, makeStyles } from '@material-ui/core';
 
 import Results from './Results';
 import Toolbar from './Toolbar';
-
+import moment from 'moment';
 import { Alert } from '@material-ui/lab';
 import { useSurvey, useCurrentUser, useBus } from '../../../states';
 
@@ -51,7 +51,9 @@ const SurveyDateListView = () => {
     data && console.log(data.records);
   }, [data]);
   const onView = createTimeStamp => {
-    setSelectedSurveyDate(createTimeStamp);
+    const date = moment(createTimeStamp).format('YYYY-MM-DD');
+
+    setSelectedSurveyDate(date);
     setShowSurveyPassengerListView(true);
     setShowSurveyDateListView(false);
   };

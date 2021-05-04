@@ -10,7 +10,7 @@ import Results from './Results';
 import Toolbar from './Toolbar';
 
 import { Alert } from '@material-ui/lab';
-import { usePassenger } from '../../../states';
+import { useUsers } from '../../../states';
 import ConfirmationDialog from '../../shared/ConfirmationDialog';
 //const useStyles = makeStyles(theme => ({
 //  root: {}
@@ -22,9 +22,9 @@ const UserListView = () => {
   // determines if the selected passenger is admin or not
   const [isAdmin, setIsAdmin] = useState(false);
   const [
-    passenger,
-    { setSelectedPassengerID, setShowListView, setShowDetailView }
-  ] = usePassenger();
+    users,
+    { setSelectedUserID, setShowListView, setShowDetailView }
+  ] = useUsers();
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [openChangeRoleDialog, setOpenChangeRoleDialog] = useState(false);
   const [{ data, loading, error }, refetch] = useAxios(
@@ -77,7 +77,8 @@ const UserListView = () => {
   const onView = id => {
     setShowDetailView(true);
     setShowListView(false);
-    setSelectedPassengerID(id);
+    setSelectedUserID(id);
+    console.log(id);
   };
   const handleCloseConfirmationDialog = async result => {
     if (result) {

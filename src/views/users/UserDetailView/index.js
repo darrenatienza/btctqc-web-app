@@ -5,7 +5,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 import Profile from './Profile';
-import { usePassenger } from '../../../states';
+import { useUsers } from '../../../states';
 import useAxios from 'axios-hooks';
 //import PassengerHistoryListView from '../PassengerHistoryListView';
 const useStyles = makeStyles(theme => ({
@@ -13,20 +13,20 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UserDetailView = () => {
-  const [passenger, { setShowListView, setShowDetailView }] = usePassenger();
+  const [users, { setShowListView, setShowDetailView }] = useUsers();
   const classes = useStyles();
   const [{ data, loading, error }, refetch] = useAxios(
     {
-      url: `/records/user_details/${passenger.selectedPassengerID}`,
+      url: `/records/user_details/${users.selectedUserID}`,
       method: 'GET'
     },
     { manual: true }
   );
   useEffect(() => {
-    if (passenger.selectedPassengerID > 0) {
+    if (users.selectedUserID > 0) {
       refetch();
     }
-  }, [passenger.selectedPassengerID]);
+  }, [users.selectedUserID]);
   const onBack = () => {
     setShowDetailView(false);
     setShowListView(true);

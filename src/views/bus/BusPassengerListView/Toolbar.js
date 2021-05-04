@@ -25,8 +25,19 @@ const useStyles = makeStyles(themes => ({
   },
   search: {}
 }));
+const temperatures = [
+  {
+    id: 0,
+    name: 'Select Temperature'
+  },
+  {
+    id: 1,
+    name: 'Below 37 degree celcius'
+  },
 
-const Toolbar = ({ className, onSearch, onBack, ...rest }) => {
+  { id: 2, name: 'Above 37 degree celcius' }
+];
+const Toolbar = ({ className, onSearch, onBack, onChangeTemp, ...rest }) => {
   const classes = useStyles();
   const [query, setQuery] = useState('');
   // useEffect(() => {
@@ -36,13 +47,44 @@ const Toolbar = ({ className, onSearch, onBack, ...rest }) => {
 
   return (
     <div className={clsx(classes.root, className)} {...rest}>
-      <Box mt={3}>
+      <Box>
         <Box display="flex">
-          <Typography variant="h1">Passenger List</Typography>
+          <Box marginTop="auto" marginBottom="auto">
+            <Typography variant="h1">Passenger List</Typography>
+          </Box>
+
           <Box marginLeft="auto">
-            <Button variant="outlined" color="primary" onClick={onBack}>
-              Back
-            </Button>
+            <Box display="flex">
+              <Box mr={3}>
+                <TextField
+                  fullWidth
+                  margin="normal"
+                  select
+                  name="temp"
+                  label="Temperature"
+                  defaultValue={1}
+                  onChange={e => onChangeTemp(e.target.value)}
+                  variant="outlined"
+                  SelectProps={{
+                    native: true
+                  }}
+                >
+                  {temperatures.map(option => (
+                    <option key={option.id} value={option.id}>
+                      {option.name}
+                    </option>
+                  ))}
+                </TextField>
+              </Box>
+
+              <Box display="flex">
+                <Box marginTop="auto" marginBottom="auto">
+                  <Button variant="outlined" color="primary" onClick={onBack}>
+                    Back
+                  </Button>
+                </Box>
+              </Box>
+            </Box>
           </Box>
         </Box>
       </Box>

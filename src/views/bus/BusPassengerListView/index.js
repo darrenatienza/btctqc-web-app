@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 const BusPassengerListView = () => {
   const classes = useStyles();
   const [criteria, setCriteria] = useState('');
-
+  const [tempSelectionID, setTempSelectionID] = useState(1);
   // get only the selected bus info idcx
   const [
     bus,
@@ -34,7 +34,14 @@ const BusPassengerListView = () => {
   ] = useBus();
   const [{ data, loading, error }, refetch] = useAxios(
     {
-      url: `/records/view_bus_passenger_list?filter=bus_info_id,eq,${bus.selectedBusID}&filter=create_time_stamp,cs,${bus.selectedSurveyDate}`,
+      url: `/records/view_bus_passenger_list?filter=bus_info_id,eq,${
+        bus.selectedBusID
+      }&filter=create_time_stamp,cs,${
+        bus.selectedSurveyDate
+      }&filter=temperature,${
+        tempSelectionID == 1 ? 'lt,37' : tempSelectionID == 2 ? 'gt,37' : ''
+      }`,
+      // }&filter=temperature,gt,37`,
       method: 'GET'
     },
     { manual: true }
@@ -44,7 +51,7 @@ const BusPassengerListView = () => {
   };
   useEffect(() => {
     reloadList();
-  }, [bus.selectedBusID]);
+  }, [bus.selectedSurveyDate, tempSelectionID]);
 
   const onView = (userID, surveyID) => {
     setSelectedSurveyID(surveyID);
@@ -55,6 +62,10 @@ const BusPassengerListView = () => {
   const handleOnBack = () => {
     setShowSurveyDateListView(true);
     setShowSurveyPassengerListView(false);
+  };
+  const handleOnChangeTemp = id => {
+    console.log(id);
+    setTempSelectionID(id);
   };
   return (
     <div>
@@ -73,7 +84,7 @@ const BusPassengerListView = () => {
         ) : (
           ''
         )}
-        <Toolbar onBack={handleOnBack} />
+        <Toolbar onBack={handleOnBack} onChangeTemp={handleOnChangeTemp} />
         <Box mt={3}>
           <Results
             onView={onView}

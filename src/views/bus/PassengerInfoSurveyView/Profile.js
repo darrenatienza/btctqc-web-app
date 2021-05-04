@@ -76,6 +76,9 @@ const Profile = ({ className, detail, onBack, survey, ...rest }) => {
                       
                     `}
                   </Typography>
+                  <Typography color="textSecondary" variant="body1">
+                    {`Temperature: ${survey.temperature}`}
+                  </Typography>
                   <Box mt={3}>
                     <Typography color="textPrimary" variant="body1">
                       {`Start Route: ${survey.start_route ?? 'Not specified'}`}
