@@ -26,21 +26,21 @@ const App = () => {
 
   configure({ axios, cache });
   // request interceptor to add token to request headers
-  axios.interceptors.request.use(
-    async config => {
-      const cookie = Cookies.get('PHPSESSID');
-      const currentUrl = window.location.pathname;
-      // check for deleted session
-      if (!cookie) {
-        //public url must not require interceptor
-        if (currentUrl !== '/login' && currentUrl !== '/register') {
-          navigate('/login');
-        }
-      }
-      return config;
-    },
-    error => Promise.reject(error)
-  );
+  // axios.interceptors.request.use(
+  //   async config => {
+  //     const cookie = Cookies.get('PHPSESSID');
+  //     const currentUrl = window.location.pathname;
+  //     // check for deleted session
+  //     if (!cookie) {
+  //       //public url must not require interceptor
+  //       if (currentUrl !== '/login' && currentUrl !== '/register') {
+  //         navigate('/login');
+  //       }
+  //     }
+  //     return config;
+  //   },
+  //   error => Promise.reject(error)
+  // );
 
   axios.interceptors.response.use(
     response => {

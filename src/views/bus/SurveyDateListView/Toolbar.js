@@ -38,7 +38,7 @@ const Toolbar = ({ className, onSearch, onBack, ...rest }) => {
     <div className={clsx(classes.root, className)} {...rest}>
       <Box mt={3}>
         <Box display="flex">
-          <Typography variant="h1">Survey Dates</Typography>
+          <Typography variant="h1">Date</Typography>
           <Box marginLeft="auto">
             <Button variant="outlined" color="primary" onClick={onBack}>
               Back

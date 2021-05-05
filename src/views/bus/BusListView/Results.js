@@ -64,7 +64,7 @@ const Results = ({
               <TableRow>
                 <TableCell padding="default">Code</TableCell>
                 <TableCell>Name</TableCell>
-                <TableCell>Registration date</TableCell>
+                {/* <TableCell>Registration date</TableCell> */}
                 <TableCell padding="default"></TableCell>
               </TableRow>
             </TableHead>
@@ -82,9 +82,9 @@ const Results = ({
                     <TableCell className={classes.nameTableCell}>
                       {bus.name}
                     </TableCell>
-                    <TableCell>
+                    {/* <TableCell>
                       {moment(bus.create_time_stamp).format('DD/MM/YYYY')}
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell padding="default">
                       <IconButton
                         aria-controls="simple-view-button"

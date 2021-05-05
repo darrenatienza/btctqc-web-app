@@ -32,7 +32,7 @@ const PassengerDetailView = () => {
     setShowListView(true);
   };
   return (
-    <Container maxWidth="sm" className={classes.root}>
+    <Container className={classes.root}>
       <Profile detail={data} onBack={onBack} />
     </Container>
   );

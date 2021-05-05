@@ -78,7 +78,7 @@ const adminItems = [
     id: 4,
     href: '/app/buses',
     icon: BusIcon,
-    title: 'Buses',
+    title: 'Bus',
     admin: true
   }
 ];
