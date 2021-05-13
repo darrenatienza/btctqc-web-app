@@ -20,12 +20,13 @@ const useStyles = makeStyles(themes => ({
   addButton: {
     [themes.breakpoints.down('md')]: {
       marginBottom: '25px'
-    }
+    },
+    marginRight: '1rem'
   },
   search: {}
 }));
 
-const Toolbar = ({ className, onSearch, onAdd, ...rest }) => {
+const Toolbar = ({ className, onSearch, onAdd, onPrint, ...rest }) => {
   const classes = useStyles();
   const [query, setQuery] = useState('');
   useEffect(() => {
@@ -42,14 +43,22 @@ const Toolbar = ({ className, onSearch, onAdd, ...rest }) => {
           justify="space-between"
           alignItems="flex-start"
         >
-          <Grid item lg={6} md={6} xs={12}>
-            <Box className={classes.addButton}>
-              <Button color="primary" variant="contained" onClick={onAdd}>
-                Add New Bus
-              </Button>
+          <Grid item lg={6} xs={12}>
+            <Box display="flex">
+              <Box className={classes.addButton}>
+                <Button color="primary" variant="contained" onClick={onAdd}>
+                  Add New Bus
+                </Button>
+              </Box>
+              <Box className={classes.addButton}>
+                <Button color="primary" variant="contained" onClick={onPrint}>
+                  Print List
+                </Button>
+              </Box>
             </Box>
           </Grid>
-          <Grid item lg={6} md={6} xs={12}>
+
+          <Grid item lg={6} xs={12}>
             <TextField
               onChange={e => setQuery(e.target.value)}
               fullWidth

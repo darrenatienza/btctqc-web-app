@@ -30,7 +30,8 @@ const BusListView = () => {
       setShowListView,
       setShowDetailView,
       setRefreshList,
-      setShowSurveyDateListView
+      setShowSurveyDateListView,
+      setShowPrintListView
     }
   ] = useBus();
   const [selectedID, setSelectedID] = useState(0);
@@ -95,10 +96,14 @@ const BusListView = () => {
     setShowSurveyDateListView(true);
     setShowListView(false);
   };
+  const handleOnPrint = () => {
+    setShowPrintListView(true);
+    setShowListView(false);
+  };
   return (
     <div>
       <Container maxWidth={false}>
-        <Toolbar onSearch={onSearch} onAdd={onAdd} />
+        <Toolbar onSearch={onSearch} onAdd={onAdd} onPrint={handleOnPrint} />
         {loading || deleteLoading ? (
           <Alert severity="info" className={classes.alert}>
             Loading...

@@ -18,7 +18,7 @@ import {
 } from '@material-ui/core';
 
 import Page from 'src/components/Page';
-import Logo from 'src/components/Logo';
+import LogoGreen from 'src/components/LogoGreen';
 import { Autocomplete } from '@material-ui/lab';
 import RequestPasswordResetDialog from './RequestPasswordResetDialog';
 const useStyles = makeStyles(theme => ({
@@ -188,7 +188,7 @@ const LoginView = () => {
                   </Typography>
                 </Box>
                 <Box display="flex" justifyContent="center">
-                  <Logo className={classes.logo} />
+                  <LogoGreen className={classes.logo} />
                 </Box>
 
                 <Controller

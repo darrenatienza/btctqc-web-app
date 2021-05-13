@@ -8,9 +8,12 @@ export const initialState = {
   showSurveyDateListView: false,
   showSurveyPassengerListView: false,
   showSurveyInfoView: false,
+  showPrintListView: false,
   refreshList: false
 };
-
+export const setShowPrintListView = bus => value => {
+  bus.setState({ showPrintListView: value });
+};
 export const setSelectedBusID = bus => value => {
   bus.setState({ selectedBusID: value });
 };
