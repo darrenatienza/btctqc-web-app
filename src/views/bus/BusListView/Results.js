@@ -20,7 +20,8 @@ import getInitials from 'src/utils/getInitials';
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
-  Eye as ViewIcon
+  Eye as ViewIcon,
+  Printer as PrintIcon
 } from 'react-feather';
 const useStyles = makeStyles(theme => ({
   root: { paddingLeft: '15px', paddingRight: '15px' },
@@ -39,6 +40,7 @@ const Results = ({
   buses,
   onEdit,
   onDelete,
+  onPrint,
   onViewSurvey,
   ...rest
 }) => {
@@ -109,6 +111,14 @@ const Results = ({
                         onClick={() => onDelete(bus.bus_info_id)}
                       >
                         <DeleteIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-controls="simple-delete-button"
+                        aria-haspopup="true"
+                        aria-label="Delete"
+                        onClick={() => onPrint(bus.bus_info_id)}
+                      >
+                        <PrintIcon />
                       </IconButton>
                     </TableCell>
                   </TableRow>

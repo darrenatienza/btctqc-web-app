@@ -60,7 +60,7 @@ const BusDetailView = () => {
     } else {
       setBusInfo({ code: '', name: '' });
     }
-  }, [bus.selectedBusID]);
+  }, [bus.showDetailView]);
   const onClose = () => {
     setSelectedBusID(0);
     setShowListView(true);

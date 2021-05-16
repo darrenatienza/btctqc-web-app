@@ -31,7 +31,8 @@ const BusListView = () => {
       setShowDetailView,
       setRefreshList,
       setShowSurveyDateListView,
-      setShowPrintListView
+      setShowPrintListView,
+      setShowBusPassengerListPrintView
     }
   ] = useBus();
   const [selectedID, setSelectedID] = useState(0);
@@ -100,6 +101,11 @@ const BusListView = () => {
     setShowPrintListView(true);
     setShowListView(false);
   };
+  const handleOnPrintSurveys = busID => {
+    setSelectedBusID(busID);
+    setShowBusPassengerListPrintView(true);
+    setShowListView(false);
+  };
   return (
     <div>
       <Container maxWidth={false}>
@@ -120,10 +126,11 @@ const BusListView = () => {
         )}
         <Box mt={3}>
           <Results
-            buses={(data && data.records) || []}
+            buses={data ? data.records : []}
             onEdit={onEdit}
             onDelete={onDelete}
             onViewSurvey={handleViewSurveyDates}
+            onPrint={handleOnPrintSurveys}
           />
         </Box>
         <ConfirmationDialog

@@ -9,7 +9,11 @@ export const initialState = {
   showSurveyPassengerListView: false,
   showSurveyInfoView: false,
   showPrintListView: false,
+  showBusPassengerListPrintView: false,
   refreshList: false
+};
+export const setShowBusPassengerListPrintView = bus => value => {
+  bus.setState({ showBusPassengerListPrintView: value });
 };
 export const setShowPrintListView = bus => value => {
   bus.setState({ showPrintListView: value });

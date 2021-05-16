@@ -8,6 +8,7 @@ import SurveyDateListView from './SurveyDateListView';
 import BusPassengerListView from './BusPassengerListView';
 import PassengerInfoSurveyView from './PassengerInfoSurveyView';
 import BusPrintListView from './BusPrintListView';
+import BusPassengerListPrintView from './BusPassengerListPrintView';
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -40,6 +41,9 @@ const BusView = () => {
           </Collapse>
           <Collapse in={bus.showPrintListView}>
             <BusPrintListView />
+          </Collapse>
+          <Collapse in={bus.showBusPassengerListPrintView}>
+            <BusPassengerListPrintView />
           </Collapse>
         </Container>
       </Page>

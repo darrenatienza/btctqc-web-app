@@ -43,7 +43,6 @@ const Detail = ({
 
   useEffect(() => {
     if (detail) {
-      console.log(detail);
       setValue('name', detail.name);
       setValue('code', detail.code);
     }
