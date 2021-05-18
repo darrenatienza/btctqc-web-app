@@ -61,35 +61,37 @@ const Results = ({ className, surveys, onView, ...rest }) => {
             </TableHead>
             <TableBody>
               {surveys &&
-                surveys.slice(0, limit).map(survey => (
-                  <TableRow hover key={survey.survey_id}>
-                    <TableCell padding="default">
-                      {moment(survey.create_time_stamp).format(
-                        'DD/MM/YYYY HH:MM:SS'
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Box alignItems="center" display="flex">
-                        <Typography color="textPrimary" variant="body1">
-                          {`${survey.first_name} ${survey.last_name}`}
-                        </Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell padding="default">{survey.bus_code}</TableCell>
-                    <TableCell>{survey.bus_name}</TableCell>
+                surveys
+                  .slice(page * limit, page * limit + limit)
+                  .map(survey => (
+                    <TableRow hover key={survey.survey_id}>
+                      <TableCell padding="default">
+                        {moment(survey.create_time_stamp).format(
+                          'DD/MM/YYYY HH:MM:SS'
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <Box alignItems="center" display="flex">
+                          <Typography color="textPrimary" variant="body1">
+                            {`${survey.first_name} ${survey.last_name}`}
+                          </Typography>
+                        </Box>
+                      </TableCell>
+                      <TableCell padding="default">{survey.bus_code}</TableCell>
+                      <TableCell>{survey.bus_name}</TableCell>
 
-                    <TableCell padding="default">
-                      <IconButton
-                        aria-controls="simple-edi-button"
-                        aria-haspopup="true"
-                        aria-label="Edit"
-                        onClick={() => onView(survey.survey_id)}
-                      >
-                        <EyeIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                      <TableCell padding="default">
+                        <IconButton
+                          aria-controls="simple-edi-button"
+                          aria-haspopup="true"
+                          aria-label="Edit"
+                          onClick={() => onView(survey.survey_id)}
+                        >
+                          <EyeIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
             </TableBody>
           </Table>
         </Box>

@@ -74,60 +74,64 @@ const Results = ({
             </TableHead>
             <TableBody>
               {passengers &&
-                passengers.slice(0, limit).map(passenger => (
-                  <TableRow hover key={passenger.user_detail_id}>
-                    <TableCell padding="default">
-                      <Box alignItems="center" display="flex">
-                        <Typography color="textPrimary" variant="body1">
-                          {`${passenger.first_name} ${getInitials(
-                            passenger.middle_name
-                          )}. ${passenger.last_name}`}
-                        </Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell>{passenger.address}</TableCell>
-                    <TableCell>{passenger.contact_number}</TableCell>
+                passengers
+                  .slice(page * limit, page * limit + limit)
+                  .map(passenger => (
+                    <TableRow hover key={passenger.user_detail_id}>
+                      <TableCell padding="default">
+                        <Box alignItems="center" display="flex">
+                          <Typography color="textPrimary" variant="body1">
+                            {`${passenger.first_name} ${getInitials(
+                              passenger.middle_name
+                            )}. ${passenger.last_name}`}
+                          </Typography>
+                        </Box>
+                      </TableCell>
+                      <TableCell>{passenger.address}</TableCell>
+                      <TableCell>{passenger.contact_number}</TableCell>
 
-                    <TableCell>
-                      {moment(passenger.create_time_stamp).format('DD/MM/YYYY')}
-                    </TableCell>
-                    <TableCell padding="default">
-                      <IconButton
-                        aria-controls="simple-open-button"
-                        aria-haspopup="true"
-                        aria-label="Role"
-                        color={passenger.admin ? 'primary' : 'default'}
-                        onClick={() =>
-                          onChangeRole(passenger.user_id, passenger.admin)
-                        }
-                      >
-                        <UserIcon />
-                      </IconButton>
+                      <TableCell>
+                        {moment(passenger.create_time_stamp).format(
+                          'DD/MM/YYYY'
+                        )}
+                      </TableCell>
+                      <TableCell padding="default">
+                        <IconButton
+                          aria-controls="simple-open-button"
+                          aria-haspopup="true"
+                          aria-label="Role"
+                          color={passenger.admin ? 'primary' : 'default'}
+                          onClick={() =>
+                            onChangeRole(passenger.user_id, passenger.admin)
+                          }
+                        >
+                          <UserIcon />
+                        </IconButton>
 
-                      <IconButton
-                        aria-controls="simple-open-button"
-                        aria-haspopup="true"
-                        aria-label="Key"
-                        color={
-                          passenger.request_password_reset
-                            ? 'secondary'
-                            : 'default'
-                        }
-                        onClick={() => onReset(passenger.user_id)}
-                      >
-                        <KeyIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-controls="simple-open-button"
-                        aria-haspopup="true"
-                        aria-label="Open"
-                        onClick={() => onView(passenger.user_detail_id)}
-                      >
-                        <EyeIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                        <IconButton
+                          aria-controls="simple-open-button"
+                          aria-haspopup="true"
+                          aria-label="Key"
+                          color={
+                            passenger.request_password_reset
+                              ? 'secondary'
+                              : 'default'
+                          }
+                          onClick={() => onReset(passenger.user_id)}
+                        >
+                          <KeyIcon />
+                        </IconButton>
+                        <IconButton
+                          aria-controls="simple-open-button"
+                          aria-haspopup="true"
+                          aria-label="Open"
+                          onClick={() => onView(passenger.user_detail_id)}
+                        >
+                          <EyeIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
             </TableBody>
           </Table>
         </Box>

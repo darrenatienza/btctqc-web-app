@@ -58,23 +58,25 @@ const Results = ({ className, surveyDates, onView, ...rest }) => {
             </TableHead>
             <TableBody>
               {surveyDates &&
-                surveyDates.slice(0, limit).map(survey => (
-                  <TableRow hover key={survey.survey_id}>
-                    <TableCell padding="default">
-                      {moment(survey.create_time_stamp).format('DD/MM/YYYY')}
-                    </TableCell>
-                    <TableCell padding="default">
-                      <IconButton
-                        aria-controls="simple-edi-button"
-                        aria-haspopup="true"
-                        aria-label="Edit"
-                        onClick={() => onView(survey.create_time_stamp)}
-                      >
-                        <EyeIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                surveyDates
+                  .slice(page * limit, page * limit + limit)
+                  .map(survey => (
+                    <TableRow hover key={survey.survey_id}>
+                      <TableCell padding="default">
+                        {moment(survey.create_time_stamp).format('DD/MM/YYYY')}
+                      </TableCell>
+                      <TableCell padding="default">
+                        <IconButton
+                          aria-controls="simple-edi-button"
+                          aria-haspopup="true"
+                          aria-label="Edit"
+                          onClick={() => onView(survey.create_time_stamp)}
+                        >
+                          <EyeIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
             </TableBody>
           </Table>
         </Box>

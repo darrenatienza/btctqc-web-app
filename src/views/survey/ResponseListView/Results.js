@@ -49,13 +49,15 @@ const Results = ({ className, responses, ...rest }) => {
             </TableHead>
             <TableBody>
               {responses &&
-                responses.slice(0, limit).map(response => (
-                  <TableRow hover key={response.response_id}>
-                    <TableCell padding="default">
-                      {response.condition_name}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                responses
+                  .slice(page * limit, page * limit + limit)
+                  .map(response => (
+                    <TableRow hover key={response.response_id}>
+                      <TableCell padding="default">
+                        {response.condition_name}
+                      </TableCell>
+                    </TableRow>
+                  ))}
             </TableBody>
           </Table>
         </Box>

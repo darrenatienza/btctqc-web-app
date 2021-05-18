@@ -71,58 +71,57 @@ const Results = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {buses &&
-                buses.slice(0, limit).map(bus => (
-                  <TableRow hover key={bus.bus_info_id}>
-                    <TableCell padding="default">
-                      <Box alignItems="center" display="flex">
-                        <Typography color="textPrimary" variant="body1">
-                          {bus.code}
-                        </Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell className={classes.nameTableCell}>
-                      {bus.name}
-                    </TableCell>
-                    {/* <TableCell>
+              {buses.slice(page * limit, page * limit + limit).map(bus => (
+                <TableRow hover key={bus.bus_info_id}>
+                  <TableCell padding="default">
+                    <Box alignItems="center" display="flex">
+                      <Typography color="textPrimary" variant="body1">
+                        {bus.code}
+                      </Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell className={classes.nameTableCell}>
+                    {bus.name}
+                  </TableCell>
+                  {/* <TableCell>
                       {moment(bus.create_time_stamp).format('DD/MM/YYYY')}
                     </TableCell> */}
-                    <TableCell padding="default">
-                      <IconButton
-                        aria-controls="simple-view-button"
-                        aria-haspopup="true"
-                        aria-label="View"
-                        onClick={() => onViewSurvey(bus.bus_info_id)}
-                      >
-                        <ViewIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-controls="simple-edi-button"
-                        aria-haspopup="true"
-                        aria-label="Edit"
-                        onClick={() => onEdit(bus.bus_info_id)}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-controls="simple-delete-button"
-                        aria-haspopup="true"
-                        aria-label="Delete"
-                        onClick={() => onDelete(bus.bus_info_id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-controls="simple-delete-button"
-                        aria-haspopup="true"
-                        aria-label="Delete"
-                        onClick={() => onPrint(bus.bus_info_id)}
-                      >
-                        <PrintIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                  <TableCell padding="default">
+                    <IconButton
+                      aria-controls="simple-view-button"
+                      aria-haspopup="true"
+                      aria-label="View"
+                      onClick={() => onViewSurvey(bus.bus_info_id)}
+                    >
+                      <ViewIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-controls="simple-edi-button"
+                      aria-haspopup="true"
+                      aria-label="Edit"
+                      onClick={() => onEdit(bus.bus_info_id)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-controls="simple-delete-button"
+                      aria-haspopup="true"
+                      aria-label="Delete"
+                      onClick={() => onDelete(bus.bus_info_id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-controls="simple-delete-button"
+                      aria-haspopup="true"
+                      aria-label="Delete"
+                      onClick={() => onPrint(bus.bus_info_id)}
+                    >
+                      <PrintIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </Box>

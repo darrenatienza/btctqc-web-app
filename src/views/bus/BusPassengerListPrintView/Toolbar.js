@@ -21,7 +21,7 @@ const useStyles = makeStyles(themes => ({
   root: {},
   button: {
     marginRight: '1rem',
-    height: '3rem'
+    height: '2rem'
   },
   dates: { minWidth: '10rem' }
 }));

@@ -59,26 +59,30 @@ const Results = ({ className, passengerList, onView, ...rest }) => {
             </TableHead>
             <TableBody>
               {passengerList &&
-                passengerList.slice(0, limit).map(survey => (
-                  <TableRow hover key={survey.survey_id}>
-                    <TableCell padding="default">
-                      {moment(survey.create_time_stamp).format('HH:MM:SS')}
-                    </TableCell>
-                    <TableCell padding="default">
-                      {`${survey.first_name} ${survey.last_name}`}
-                    </TableCell>
-                    <TableCell padding="default">
-                      <IconButton
-                        aria-controls="simple-edi-button"
-                        aria-haspopup="true"
-                        aria-label="Edit"
-                        onClick={() => onView(survey.user_id, survey.survey_id)}
-                      >
-                        <EyeIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                passengerList
+                  .slice(page * limit, page * limit + limit)
+                  .map(survey => (
+                    <TableRow hover key={survey.survey_id}>
+                      <TableCell padding="default">
+                        {moment(survey.create_time_stamp).format('HH:MM:SS')}
+                      </TableCell>
+                      <TableCell padding="default">
+                        {`${survey.first_name} ${survey.last_name}`}
+                      </TableCell>
+                      <TableCell padding="default">
+                        <IconButton
+                          aria-controls="simple-edi-button"
+                          aria-haspopup="true"
+                          aria-label="Edit"
+                          onClick={() =>
+                            onView(survey.user_id, survey.survey_id)
+                          }
+                        >
+                          <EyeIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
             </TableBody>
           </Table>
         </Box>

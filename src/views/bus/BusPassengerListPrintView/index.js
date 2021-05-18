@@ -20,6 +20,7 @@ const BusPassengerListPrintView = () => {
   ] = useBus();
   const [surveyDate, setSurveyDate] = useState('');
   const [busPassengerList, setBusPassengerList] = useState([]);
+  const [surveyDates, setSurveyDates] = useState([]);
   const componentRef = useRef();
   const handleOnPrint = useReactToPrint({
     content: () => componentRef.current
@@ -27,7 +28,7 @@ const BusPassengerListPrintView = () => {
   // http - get barangay clearance list
   const [{ data, loading, error }, refetch] = useAxios(
     {
-      url: `/records/view_bus_passenger_list?filter=bus_info_id,eq,${bus.selectedBusID}&filter=create_time_stamp,cs,${surveyDate}`,
+      url: `/records/view_bus_passenger_list?filter=bus_info_id,eq,${bus.selectedBusID}&filter=create_time_stamp,cs,${surveyDate}&order=temperature,desc`,
       method: 'GET'
     },
     {
@@ -55,6 +56,7 @@ const BusPassengerListPrintView = () => {
       refetchSurveyDates();
     } else {
       setBusPassengerList([]);
+      setSurveyDates([]);
     }
   }, [bus.showBusPassengerListPrintView]);
   useEffect(() => {
@@ -69,17 +71,18 @@ const BusPassengerListPrintView = () => {
     setSurveyDate(moment(date).format('YYYY-MM-DD'));
   };
   useEffect(() => {
-    const _data = data ? data.records : [];
-    if (_data.length > 0) {
-      setBusPassengerList(_data);
-    }
+    setBusPassengerList(data?.records ?? []);
   }, [data]);
+  useEffect(() => {
+    setSurveyDates(getSurveyDateData?.records ?? []);
+  }, [getSurveyDateData]);
+
   return (
     <div>
       <Toolbar
         onClose={handleOnBack}
         onPrint={handleOnPrint}
-        surveyDates={getSurveyDateData ? getSurveyDateData.records : []}
+        surveyDates={surveyDates}
         onChangeDate={handleOnChangeDate}
       />
       <PrintPreview ref={componentRef} data={busPassengerList} />

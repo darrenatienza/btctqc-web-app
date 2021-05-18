@@ -72,7 +72,7 @@ class PrintPreview extends Component {
               variant="h5"
               className={classes.subTitle}
             >
-              List of Bus
+              List of Passenger
             </Typography>
           </Box>
           {/* table itself */}
